@@ -18,8 +18,8 @@ export const datosRendimientos = {
   // ---------- Números de la simulación ----------
   /** Monto de ejemplo en pesos (sin puntos). */
   montoEjemplo: 100000,
-  /** TNA de referencia en %, con punto decimal (20.78 = 20,78%). */
-  tna: 20.78,
+  /** TNA de referencia en %, con punto decimal (21.81 = 21,81%). */
+  tna: 21.81,
   /** Días del año para pasar de TNA a rendimiento diario. */
   diasBase: 365,
   /** Cantidad de días de la simulación de la escena 7. */

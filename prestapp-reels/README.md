@@ -14,7 +14,7 @@ Video vertical de Instagram (1080x1920, 60 fps, 30 s) hecho 100% con código.
    - Final (1080x1920): `npm run final`
    - Cuadros sueltos para revisar: `npm run cuadros`
 
-Los MP4 quedan en la carpeta `out/`.
+Los MP4 quedan en la carpeta `out/`. El borrador sale a media resolución (se ve más blando a propósito); el final se exporta con cuadros sin pérdida y compresión de alta calidad (ver `remotion.config.ts`).
 
 ## Dónde está cada cosa
 

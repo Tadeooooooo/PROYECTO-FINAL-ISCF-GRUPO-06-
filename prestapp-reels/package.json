@@ -29,7 +29,7 @@
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
     "borrador": "remotion render PrestappRendimientos out/prestapp-rendimientos-borrador-540x960.mp4 --scale=0.5",
-    "final": "remotion render PrestappRendimientos out/prestapp-rendimientos-1080x1920.mp4 --crf=16",
+    "final": "node scripts/render-final.mjs",
     "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780"
   },
   "sideEffects": [
