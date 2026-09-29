@@ -10,5 +10,8 @@ import { enableTailwind } from '@remotion/tailwind-v4';
 
 Config.setRspack(true);
 Config.setVideoImageFormat("jpeg");
+Config.setJpegQuality(95);
+// Color estándar de video (bt709, yuv420p): el que esperan Instagram y los celulares.
+Config.setColorSpace("bt709");
 Config.setOverwriteOutput(true);
 Config.overrideBundlerConfig(enableTailwind);

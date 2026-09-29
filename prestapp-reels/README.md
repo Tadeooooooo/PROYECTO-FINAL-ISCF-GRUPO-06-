@@ -1,54 +1,25 @@
-# Remotion video
+# Reels de Prestapp (Remotion)
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Video vertical de Instagram (1080x1920, 60 fps, 30 s) hecho 100% con código.
 
-Welcome to your Remotion project!
+## Hacer otra versión
 
-## Commands
+1. Abrí `src/datos/rendimientos.ts` y cambiá textos o números. Es el único archivo que hay que tocar.
+   - Lo que va entre `*asteriscos*` sale en verde.
+   - `\n` fuerza un salto de línea.
+   - El rendimiento por día, el de 30 días y los saldos que suben se calculan solos a partir de `montoEjemplo`, `tna` y `diasBase`.
+2. Para ver el video en el navegador: `npm run dev`.
+3. Para exportarlo:
+   - Borrador (540x960): `npm run borrador`
+   - Final (1080x1920): `npm run final`
+   - Cuadros sueltos para revisar: `npm run cuadros`
 
-**Install Dependencies**
+Los MP4 quedan en la carpeta `out/`.
 
-```console
-npm i
-```
+## Dónde está cada cosa
 
-**Start Preview**
-
-```console
-npm run dev
-```
-
-**Render video**
-
-```console
-npx remotion render
-```
-
-**Upgrade Remotion**
-
-```console
-npx remotion upgrade
-```
-
-## Docs
-
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
-
-## Help
-
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
-
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+- `src/datos/rendimientos.ts`: textos y números.
+- `src/escenas/`: un archivo por escena (Escena01Gancho … Escena10Legal). Las escenas 2 a 5 comparten el celular (`BloqueCelular.tsx`) y la 6 y la 7 van juntas (`BloqueSimulacion.tsx`).
+- `src/componentes/`: piezas reutilizables (título animado, celular, pantalla de la app, íconos SVG, contador).
+- `src/marca/marca.ts`: colores, tipografías y zonas seguras de Instagram.
+- `public/brand/`: logos. `public/fonts/`: Sora y Manrope, con licencia libre OFL.

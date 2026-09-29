@@ -1,16 +1,18 @@
 {
   "name": "prestapp-reels",
   "version": "1.0.0",
-  "description": "My Remotion video",
+  "description": "Reels de Prestapp hechos con Remotion",
   "repository": {},
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "@remotion/cli": "4.0.530",
+    "@remotion/fonts": "4.0.530",
+    "@remotion/tailwind-v4": "4.0.530",
+    "@remotion/transitions": "4.0.530",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.530",
-    "@remotion/tailwind-v4": "4.0.530",
     "tailwindcss": "4.0.0"
   },
   "devDependencies": {
@@ -25,7 +27,10 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "borrador": "remotion render PrestappRendimientos out/prestapp-rendimientos-borrador-540x960.mp4 --scale=0.5",
+    "final": "remotion render PrestappRendimientos out/prestapp-rendimientos-1080x1920.mp4 --crf=16",
+    "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780"
   },
   "sideEffects": [
     "*.css"

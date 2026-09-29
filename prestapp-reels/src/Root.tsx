@@ -1,10 +1,18 @@
 import "./index.css";
-import { MyComposition } from "./Composition";
+import { Composition } from "remotion";
+import { datosRendimientos } from "./datos/rendimientos";
+import { VideoRendimientos } from "./Video";
 
 export const RemotionRoot: React.FC = () => {
   return (
-    <>
-      <MyComposition />
-    </>
+    <Composition
+      id="PrestappRendimientos"
+      component={VideoRendimientos}
+      durationInFrames={1800}
+      fps={60}
+      width={1080}
+      height={1920}
+      defaultProps={datosRendimientos}
+    />
   );
 };
