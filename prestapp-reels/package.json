@@ -8,6 +8,7 @@
   "dependencies": {
     "@remotion/cli": "4.0.530",
     "@remotion/fonts": "4.0.530",
+    "@remotion/media": "4.0.530",
     "@remotion/tailwind-v4": "4.0.530",
     "@remotion/transitions": "4.0.530",
     "react": "19.2.3",
@@ -30,7 +31,8 @@
     "lint": "eslint src && tsc",
     "borrador": "remotion render PrestappRendimientos out/prestapp-rendimientos-borrador-540x960.mp4 --scale=0.5",
     "final": "node scripts/render-final.mjs",
-    "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780"
+    "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780",
+    "audio": "python3 scripts/audio/generar_audio.py"
   },
   "sideEffects": [
     "*.css"

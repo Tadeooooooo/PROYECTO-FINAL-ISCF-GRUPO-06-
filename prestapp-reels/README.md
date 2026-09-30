@@ -16,6 +16,13 @@ Video vertical de Instagram (1080x1920, 60 fps, 30 s) hecho 100% con código.
 
 Los MP4 quedan en la carpeta `out/`. El borrador sale a media resolución (se ve más blando a propósito); el final se exporta con cuadros sin pérdida y compresión de alta calidad (ver `remotion.config.ts`).
 
+## Sonido
+
+- La música y los efectos son **originales**: los sintetiza `scripts/audio/generar_audio.py` desde cero (sin samples ni grabaciones de terceros), así que no tienen derechos de autor de nadie más.
+- Volumen: `volumenMusica` y `volumenEfectos` en `src/datos/rendimientos.ts` (0 = apagado, 1 = máximo). Con `volumenMusica: 0` sale solo con efectos, por ejemplo para ponerle música en CapCut.
+- Cada efecto está dentro de su escena, en el cuadro exacto de la animación (componente `Efecto`).
+- Para volver a generar el audio: `pip install numpy scipy` y después `python3 scripts/audio/generar_audio.py`.
+
 ## Dónde está cada cosa
 
 - `src/datos/rendimientos.ts`: textos y números.
@@ -23,3 +30,4 @@ Los MP4 quedan en la carpeta `out/`. El borrador sale a media resolución (se ve
 - `src/componentes/`: piezas reutilizables (título animado, celular, pantalla de la app, íconos SVG, contador).
 - `src/marca/marca.ts`: colores, tipografías y zonas seguras de Instagram.
 - `public/brand/`: logos. `public/fonts/`: Sora y Manrope, con licencia libre OFL.
+- `public/audio/`: música (`musica.wav`) y efectos (`sfx/`).

@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { IconoMoneda, IconoTilde } from "../componentes/Iconos";
 import { Titular, ZonaTitular } from "../componentes/Titular";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, fuenteTitulos } from "../marca/marca";
 import { formatoNumero } from "../utils/numeros";
@@ -26,6 +27,14 @@ export const Escena03SinMinimo: React.FC<{ readonly datos: DatosVideo }> = ({ da
 
   return (
     <AbsoluteFill>
+      {/* Sonido: aparece la tarjeta, cambia cada monto y cae cada moneda */}
+      <Efecto archivo="pop-suave" en={10} volumen={0.5} />
+      {CAMBIOS.map((c, i) => (
+        <React.Fragment key={c}>
+          <Efecto archivo="tecla-2" en={c} volumen={0.4} />
+          <Efecto archivo={`tintineo-${(i % 3) + 1}`} en={c + 12} volumen={0.6} />
+        </React.Fragment>
+      ))}
       <ZonaTitular>
         <Titular texto={datos.sinMinimo} desde={4} hasta={180} tamano={96} retrasoPorPalabra={5} />
       </ZonaTitular>

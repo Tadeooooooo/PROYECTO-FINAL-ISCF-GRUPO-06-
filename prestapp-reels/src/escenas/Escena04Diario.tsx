@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { IconoTilde } from "../componentes/Iconos";
 import { Titular, ZonaTitular } from "../componentes/Titular";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, fuenteTexto, fuenteTitulos } from "../marca/marca";
 import { calcularSimulacion, formatoNumero } from "../utils/numeros";
@@ -54,6 +55,12 @@ export const Escena04Diario: React.FC<{ readonly datos: DatosVideo }> = ({ datos
 
   return (
     <AbsoluteFill style={{ opacity: 1 - salida, scale: String(1 - 0.05 * salida) }}>
+      {/* Sonido: entran las tarjetas y cada día tildado suena una nota más aguda */}
+      <Efecto archivo="pop-suave" en={6} volumen={0.45} />
+      <Efecto archivo="pop-suave" en={12} volumen={0.35} />
+      {[...Array(DIAS).keys()].map((i) => (
+        <Efecto key={i} archivo={`nota-${String(i + 1).padStart(2, "0")}`} en={cuadroTilde(i)} volumen={0.36} />
+      ))}
       <ZonaTitular>
         <Titular texto={datos.diario} desde={4} tamano={96} retrasoPorPalabra={5} />
       </ZonaTitular>

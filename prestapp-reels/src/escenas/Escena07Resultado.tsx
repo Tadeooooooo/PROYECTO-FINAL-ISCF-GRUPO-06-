@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { SignoAprox } from "../componentes/Iconos";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, fuenteTexto, fuenteTitulos } from "../marca/marca";
 import { calcularSimulacion, formatoNumero } from "../utils/numeros";
@@ -65,6 +66,13 @@ export const Escena07Resultado: React.FC<{ readonly datos: DatosVideo }> = ({ da
 
   return (
     <AbsoluteFill>
+      {/* Sonido: entra la TNA, cuenta el número del día, suben las barras y "éxito" al llegar */}
+      <Efecto archivo="pop" en={4} volumen={0.5} />
+      <Efecto archivo="pop-grande" en={10} volumen={0.5} />
+      <Efecto archivo="contador" en={14} volumen={0.35} />
+      <Efecto archivo="whoosh-suave" en={CAMBIO - 12} volumen={0.35} />
+      <Efecto archivo="subida" en={BARRAS_DESDE} volumen={0.45} />
+      <Efecto archivo="exito" en={finBarras} volumen={0.7} />
       {/* TNA de referencia */}
       <div style={{ position: "absolute", top: 300, left: 80, right: 80, display: "flex", justifyContent: "center" }}>
         <div

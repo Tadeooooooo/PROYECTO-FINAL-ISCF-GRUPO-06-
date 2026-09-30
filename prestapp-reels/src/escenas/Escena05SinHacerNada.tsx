@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { IconoApp, IconoDestello, IconoLuna } from "../componentes/Iconos";
 import { Titular, ZonaTitular } from "../componentes/Titular";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, fuenteTexto, fuenteTitulos } from "../marca/marca";
 import { calcularSimulacion, formatoNumero } from "../utils/numeros";
@@ -19,6 +20,9 @@ export const Escena05SinHacerNada: React.FC<{ readonly datos: DatosVideo }> = ({
 
   return (
     <AbsoluteFill>
+      {/* Sonido: llega la noche y después la notificación */}
+      <Efecto archivo="brillo" en={8} volumen={0.45} />
+      <Efecto archivo="notificacion" en={LLEGA_NOTIFICACION} volumen={0.75} />
       <ZonaTitular>
         <Titular texto={datos.sinHacerNada} desde={6} tamano={96} retrasoPorPalabra={5} />
       </ZonaTitular>

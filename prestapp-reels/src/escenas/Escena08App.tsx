@@ -3,6 +3,7 @@ import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } fr
 import { Celular } from "../componentes/Celular";
 import { PantallaApp } from "../componentes/PantallaApp";
 import { Titular, ZonaTitular } from "../componentes/Titular";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { CELULAR } from "../marca/marca";
 import { calcularSimulacion, fechaMenosDias } from "../utils/numeros";
@@ -29,6 +30,10 @@ export const Escena08App: React.FC<{ readonly datos: DatosVideo }> = ({ datos })
 
   return (
     <AbsoluteFill>
+      {/* Sonido: cada acreditación nueva que entra a la lista */}
+      {NUEVAS.map((cuadro) => (
+        <Efecto key={cuadro} archivo="entra-plata" en={cuadro} volumen={0.55} />
+      ))}
       <ZonaTitular>
         <Titular texto={datos.enLaApp} desde={8} tamano={96} retrasoPorPalabra={5} />
       </ZonaTitular>

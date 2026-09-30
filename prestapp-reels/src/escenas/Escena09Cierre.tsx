@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { IconoApp } from "../componentes/Iconos";
 import { Titular, ZonaTitular } from "../componentes/Titular";
+import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, degradeMarca, fuenteTitulos } from "../marca/marca";
 
@@ -18,6 +19,10 @@ export const Escena09Cierre: React.FC<{ readonly datos: DatosVideo }> = ({ datos
 
   return (
     <AbsoluteFill style={{ background: degradeMarca }}>
+      {/* Sonido: aparece el ícono, la onda de la burbuja "$" y el botón */}
+      <Efecto archivo="pop-grande" en={16} volumen={0.7} />
+      <Efecto archivo="ping" en={38} volumen={0.5} />
+      <Efecto archivo="boton" en={66} volumen={0.6} />
       <AbsoluteFill
         style={{ background: `radial-gradient(circle at 50% 30%, rgba(255,255,255,0.18) 0%, transparent 45%)` }}
       />

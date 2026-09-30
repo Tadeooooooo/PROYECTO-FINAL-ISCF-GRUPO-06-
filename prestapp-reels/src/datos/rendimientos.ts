@@ -75,6 +75,13 @@ export const datosRendimientos = {
   // ---------- Aviso legal (obligatorio) ----------
   disclaimer:
     "Simulación informativa. TNA de referencia sujeta a variación. Rendimientos no garantizados.",
+
+  // ---------- Sonido ----------
+  // Música y efectos son originales (sintetizados por scripts/audio/generar_audio.py): sin derechos de terceros.
+  /** Volumen de la música de fondo: 0 = sin música, 1 = al máximo. */
+  volumenMusica: 0.6,
+  /** Volumen de los efectos de sonido: 0 = sin efectos, 1 = al máximo. */
+  volumenEfectos: 1,
 };
 
 export type DatosVideo = typeof datosRendimientos;
