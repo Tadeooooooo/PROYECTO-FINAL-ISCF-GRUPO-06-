@@ -26,7 +26,7 @@ export const datosRendimientos = {
   diasSimulacion: 30,
 
   // ---------- Escena 1 · Gancho (0–2 s) ----------
-  gancho: "¿Tu plata\nestá *quieta?*",
+  gancho: "¿Tu dinero\nestá *quieto?*",
   etiquetaSaldo: "Tu saldo",
   /** Texto que acompaña al chip verde "+$57 hoy". */
   chipHoy: "hoy",
@@ -79,7 +79,7 @@ export const datosRendimientos = {
   // ---------- Sonido ----------
   // Música y efectos son originales (sintetizados por scripts/audio/generar_audio.py): sin derechos de terceros.
   /** Volumen de la música de fondo: 0 = sin música, 1 = al máximo. */
-  volumenMusica: 0.6,
+  volumenMusica: 0.5,
   /** Volumen de los efectos de sonido: 0 = sin efectos, 1 = al máximo. */
   volumenEfectos: 1,
 };

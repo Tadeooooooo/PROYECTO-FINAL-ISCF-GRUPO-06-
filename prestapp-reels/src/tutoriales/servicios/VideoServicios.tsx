@@ -28,8 +28,6 @@ import {
   GanchoBase,
 } from "../comun/escenas";
 import {
-  IcCelular,
-  IcDocumentoLineas,
   IcGota,
   IcLlama,
   IcRayo,
@@ -329,10 +327,6 @@ export const VideoServicios: React.FC<DatosServicios> = (datos) => {
     <IcLlama key="l" tamano={84} />,
     <IcGota key="g" tamano={84} />,
     <IcWifi key="w" tamano={84} color="#B497FF" />,
-    <IcCelular key="c" tamano={84} color="#fff" />,
-    <IcDocumentoLineas key="d" tamano={84} color="#fff" />,
-    <IcRayo key="r2" tamano={84} />,
-    <IcGota key="g2" tamano={84} />,
   ];
 
   return (

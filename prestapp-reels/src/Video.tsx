@@ -39,11 +39,8 @@ export const VideoRendimientos: React.FC<DatosVideo> = (datos) => (
           volume={Math.min(1, datos.volumenMusica)}
         />
       )}
-      {/* Whooshes de las transiciones: el pico del sonido cae en la mitad de cada cambio de escena */}
-      <Efecto archivo="whoosh" en={111} volumen={0.45} />
-      <Efecto archivo="whoosh" en={831} volumen={0.45} />
-      <Efecto archivo="whoosh" en={1281} volumen={0.45} />
-      <Efecto archivo="whoosh-suave" en={1465} volumen={0.4} />
+      {/* Un solo whoosh, en la primera transición (sonido reducido) */}
+      <Efecto archivo="whoosh" en={111} volumen={0.35} />
       <Fondo />
       <TransitionSeries>
         <TransitionSeries.Sequence
@@ -78,7 +75,7 @@ export const VideoRendimientos: React.FC<DatosVideo> = (datos) => (
           name="9 · Cierre (24,5–27 s)"
           durationInFrames={150 + 20}
         >
-          <Escena09Cierre datos={datos} />
+          <Escena09Cierre datos={datos} sonidos="minimo" />
         </TransitionSeries.Sequence>
         <TransitionSeries.Transition {...fundido} />
         <TransitionSeries.Sequence

@@ -1,7 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { Titular, ZonaTitular } from "../componentes/Titular";
-import { Efecto } from "../componentes/Sonido";
 import type { DatosVideo } from "../datos/rendimientos";
 import { colores, fuenteTexto, fuenteTitulos } from "../marca/marca";
 import { formatoNumero } from "../utils/numeros";
@@ -34,12 +33,6 @@ export const Escena06Simulacion: React.FC<{ readonly datos: DatosVideo }> = ({ d
 
   return (
     <AbsoluteFill style={{ opacity: 1 - salida, translate: `0px ${-50 * salida}px` }}>
-      {/* Sonido: una tecla por cada carácter del monto y el trazo del subrayado */}
-      <Efecto archivo="pop-suave" en={8} volumen={0.4} />
-      {monto.split("").map((_, i) => (
-        <Efecto key={i} archivo={`tecla-${(i % 3) + 1}`} en={EMPIEZA_A_ESCRIBIR + i * CUADROS_POR_CARACTER} volumen={0.55} />
-      ))}
-      <Efecto archivo="trazo" en={terminaDeEscribir + 10} volumen={0.4} />
       <ZonaTitular>
         <Titular texto={datos.simulemos} desde={4} tamano={104} />
       </ZonaTitular>

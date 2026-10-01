@@ -31,10 +31,8 @@ export const Escena01Gancho: React.FC<{ readonly datos: DatosVideo }> = ({ datos
   return (
     <AbsoluteFill>
       {/* Sonido */}
-      <Efecto archivo="impacto" en={0} volumen={0.9} />
-      <Efecto archivo="pop" en={INICIO_CHIP} volumen={0.7} />
-      <Efecto archivo="moneda" en={INICIO_CHIP + 3} volumen={0.6} />
-      <Efecto archivo="contador" en={INICIO_CHIP + 8} volumen={0.35} />
+      <Efecto archivo="impacto" en={0} volumen={0.5} />
+      <Efecto archivo="moneda" en={INICIO_CHIP + 3} volumen={0.5} />
       <ZonaTitular arriba={300}>
         <Titular texto={datos.gancho} tamano={116} estilo="golpe" retrasoPorPalabra={2} />
       </ZonaTitular>

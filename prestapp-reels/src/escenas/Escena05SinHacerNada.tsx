@@ -20,9 +20,8 @@ export const Escena05SinHacerNada: React.FC<{ readonly datos: DatosVideo }> = ({
 
   return (
     <AbsoluteFill>
-      {/* Sonido: llega la noche y después la notificación */}
-      <Efecto archivo="brillo" en={8} volumen={0.45} />
-      <Efecto archivo="notificacion" en={LLEGA_NOTIFICACION} volumen={0.75} />
+      {/* Sonido: llega la notificación */}
+      <Efecto archivo="notificacion" en={LLEGA_NOTIFICACION} volumen={0.6} />
       <ZonaTitular>
         <Titular texto={datos.sinHacerNada} desde={6} tamano={96} retrasoPorPalabra={5} />
       </ZonaTitular>

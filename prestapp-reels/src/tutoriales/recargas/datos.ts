@@ -9,7 +9,7 @@ export const datosRecargas = {
   pasoMenu: "Tocá el\n*menú*",
   pasoRecargas: "Entrá a\n*Recargar prepagos*",
   pasoCompania: "Elegí tu\n*compañía*",
-  pasoDatos: "Poné el número\ny el *monto*",
+  pasoDatos: "Ingresá el número\ny el *monto*",
   pasoExito: "¡*Recargado!*",
 
   // Lo que se ve en la app (datos de ejemplo)
@@ -37,7 +37,7 @@ export const datosRecargas = {
   cta: "Abrí Prestapp",
 
   // Sonido (0 = apagado, 1 = máximo)
-  volumenMusica: 0.7,
+  volumenMusica: 0.55,
   volumenEfectos: 1,
 };
 

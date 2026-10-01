@@ -334,7 +334,7 @@ const PantallaMonto: React.FC<{
   );
 };
 
-/** Dato: el otro celular recibe la plata al instante. */
+/** Dato: el otro celular recibe el dinero al instante. */
 const DatoTransferencias: React.FC<{ readonly datos: DatosTransferencias }> = ({
   datos,
 }) => {
@@ -412,7 +412,7 @@ const DatoTransferencias: React.FC<{ readonly datos: DatosTransferencias }> = ({
               color: colores.textoOscuro,
             }}
           >
-            Recibiste plata
+            {datos.notificacionTitulo}
           </div>
           <div
             style={{

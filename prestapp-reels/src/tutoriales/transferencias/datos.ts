@@ -4,10 +4,10 @@
  */
 export const datosTransferencias = {
   // Títulos de cada escena
-  gancho: "Mandá plata\n*al instante*",
+  gancho: "Mandá dinero\n*al instante*",
   promesa: "Transferí desde\n*Prestapp*",
   pasoBoton: "Tocá\n*Transferir*",
-  pasoAlias: "Poné el\n*alias* o CVU",
+  pasoAlias: "Ingresá el\n*alias* o CVU",
   pasoMonto: "Elegí\n*cuánto* mandar",
   pasoExito: "¡*Enviada!*",
 
@@ -20,6 +20,9 @@ export const datosTransferencias = {
   /** Monto de ejemplo en pesos (sin puntos). */
   monto: 15000,
 
+  // Notificación que recibe el otro usuario
+  notificacionTitulo: "Recibiste dinero",
+
   // Dato real
   dato: "Entre usuarios de Prestapp,\nllega *al instante*",
 
@@ -28,7 +31,7 @@ export const datosTransferencias = {
   cta: "Abrí Prestapp",
 
   // Sonido (0 = apagado, 1 = máximo)
-  volumenMusica: 0.7,
+  volumenMusica: 0.55,
   volumenEfectos: 1,
 };
 
