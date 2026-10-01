@@ -1,5 +1,11 @@
 import React from "react";
-import { Easing, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  Easing,
+  interpolate,
+  spring,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { colores, fuenteTitulos } from "../marca/marca";
 
 type Palabra = { texto: string; verde: boolean };
@@ -14,14 +20,17 @@ const separarTexto = (texto: string): Palabra[][] => {
       .map((crudo) => {
         let t = crudo;
         let verde = enVerde;
-        if (t.startsWith("*")) {
+        // El asterisco puede ir después de signos de apertura ("¡*Listo!*") o antes de los de cierre.
+        const inicio = t.match(/^([¡¿("]*)\*(.*)$/);
+        if (inicio) {
           verde = true;
           enVerde = true;
-          t = t.slice(1);
+          t = inicio[1] + inicio[2];
         }
-        if (t.endsWith("*")) {
+        const fin = t.match(/^(.*)\*([!?.,:;)"]*)$/);
+        if (fin) {
           enVerde = false;
-          t = t.slice(0, -1);
+          t = fin[1] + fin[2];
         }
         return { texto: t, verde };
       }),
@@ -87,7 +96,12 @@ export const Titular: React.FC<Props> = ({
       {lineas.map((linea, l) => (
         <div
           key={l}
-          style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", columnGap: "0.26em" }}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            columnGap: "0.26em",
+          }}
         >
           {linea.map((palabra) => {
             const orden = escalonar === "linea" ? l : indice;
@@ -95,20 +109,39 @@ export const Titular: React.FC<Props> = ({
             indice++;
             const entrada =
               estilo === "golpe"
-                ? spring({ frame: local, fps, config: { damping: 22, stiffness: 520, mass: 0.5 } })
-                : spring({ frame: local, fps, config: { damping: 15, stiffness: 170, mass: 0.8 } });
+                ? spring({
+                    frame: local,
+                    fps,
+                    config: { damping: 22, stiffness: 520, mass: 0.5 },
+                  })
+                : spring({
+                    frame: local,
+                    fps,
+                    config: { damping: 15, stiffness: 170, mass: 0.8 },
+                  });
             return (
               <span
                 key={indice}
                 style={{
                   display: "inline-block",
                   color: palabra.verde ? colores.verde : undefined,
-                  opacity: interpolate(local, [0, estilo === "golpe" ? 3 : 8], [0, 1], {
-                    extrapolateLeft: "clamp",
-                    extrapolateRight: "clamp",
-                  }),
-                  translate: estilo === "golpe" ? undefined : `0px ${(1 - entrada) * tamano * 0.55}px`,
-                  scale: estilo === "golpe" ? String(1.18 - 0.18 * entrada) : undefined,
+                  opacity: interpolate(
+                    local,
+                    [0, estilo === "golpe" ? 3 : 8],
+                    [0, 1],
+                    {
+                      extrapolateLeft: "clamp",
+                      extrapolateRight: "clamp",
+                    },
+                  ),
+                  translate:
+                    estilo === "golpe"
+                      ? undefined
+                      : `0px ${(1 - entrada) * tamano * 0.55}px`,
+                  scale:
+                    estilo === "golpe"
+                      ? String(1.18 - 0.18 * entrada)
+                      : undefined,
                 }}
               >
                 {palabra.texto}
@@ -122,9 +155,11 @@ export const Titular: React.FC<Props> = ({
 };
 
 /** Caja fija arriba, dentro de la zona segura, donde van los títulos. */
-export const ZonaTitular: React.FC<{ readonly children: React.ReactNode; readonly arriba?: number }> = ({
-  children,
-  arriba = 290,
-}) => (
-  <div style={{ position: "absolute", top: arriba, left: 80, right: 80 }}>{children}</div>
+export const ZonaTitular: React.FC<{
+  readonly children: React.ReactNode;
+  readonly arriba?: number;
+}> = ({ children, arriba = 290 }) => (
+  <div style={{ position: "absolute", top: arriba, left: 80, right: 80 }}>
+    {children}
+  </div>
 );

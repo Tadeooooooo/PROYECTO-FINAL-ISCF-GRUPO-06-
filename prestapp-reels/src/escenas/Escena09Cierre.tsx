@@ -7,7 +7,11 @@ import type { DatosVideo } from "../datos/rendimientos";
 import { colores, degradeMarca, fuenteTitulos } from "../marca/marca";
 
 // Escena 9 · 24,5–27 s · Cierre de marca con el llamado a la acción.
-export const Escena09Cierre: React.FC<{ readonly datos: DatosVideo }> = ({ datos }) => {
+export const Escena09Cierre: React.FC<{
+  readonly datos: Pick<DatosVideo, "cierre" | "cta">;
+  /** "minimo": solo el pop del ícono (para los videos con menos sonidos). */
+  readonly sonidos?: "completo" | "minimo";
+}> = ({ datos, sonidos = "completo" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -21,8 +25,8 @@ export const Escena09Cierre: React.FC<{ readonly datos: DatosVideo }> = ({ datos
     <AbsoluteFill style={{ background: degradeMarca }}>
       {/* Sonido: aparece el ícono, la onda de la burbuja "$" y el botón */}
       <Efecto archivo="pop-grande" en={16} volumen={0.7} />
-      <Efecto archivo="ping" en={38} volumen={0.5} />
-      <Efecto archivo="boton" en={66} volumen={0.6} />
+      {sonidos === "completo" && <Efecto archivo="ping" en={38} volumen={0.5} />}
+      {sonidos === "completo" && <Efecto archivo="boton" en={66} volumen={0.6} />}
       <AbsoluteFill
         style={{ background: `radial-gradient(circle at 50% 30%, rgba(255,255,255,0.18) 0%, transparent 45%)` }}
       />

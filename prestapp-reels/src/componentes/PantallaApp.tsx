@@ -13,6 +13,7 @@ import {
   IconoIngresar,
   IconoMenu,
   IconoOjo,
+  IconoOjoTachado,
   IconoPersonas,
   IconoQR,
   Isotipo,
@@ -50,7 +51,9 @@ export const PantallaApp: React.FC<{
   readonly verMas: string;
   /** Desplazamiento vertical del contenido (como si el usuario scrolleara). */
   readonly desplazamiento?: number;
-}> = ({ saldo, tnaTexto, movimientos, concepto, tituloMovimientos, verMas, desplazamiento = 0 }) => {
+  /** Si se pasa, muestra el encabezado real de la app: saludo + saldo oculto con asteriscos. */
+  readonly saludo?: string;
+}> = ({ saldo, tnaTexto, movimientos, concepto, tituloMovimientos, verMas, desplazamiento = 0, saludo }) => {
   const texto: React.CSSProperties = { fontFamily: fuenteTexto, position: "absolute" };
 
   return (
@@ -106,14 +109,27 @@ export const PantallaApp: React.FC<{
         >
           <IconoCampana tamano={28} />
         </div>
-        {/* Saldo (en la captura está tapado; lo ubicamos debajo del logo) */}
-        <div style={{ ...texto, left: 52, top: 206, fontSize: 21, fontWeight: 600, color: "rgba(255,255,255,0.75)" }}>
-          Saldo disponible
-        </div>
-        <div style={{ ...texto, left: 52, top: 232, fontSize: 40, fontWeight: 800, color: colores.blanco, letterSpacing: "-0.01em" }}>
-          $ {formatoNumero(saldo, 2)}
-        </div>
-        <IconoOjo tamano={34} style={{ position: "absolute", right: 48, top: 240 }} />
+        {saludo ? (
+          <>
+            {/* Encabezado real: saludo y saldo oculto */}
+            <div style={{ ...texto, left: 40, top: 226, fontSize: 25, fontWeight: 700, color: colores.blanco }}>{saludo}</div>
+            <div style={{ ...texto, right: 92, top: 218, fontSize: 30, fontWeight: 800, color: colores.blanco, letterSpacing: "0.04em" }}>
+              <span style={{ fontWeight: 300, fontSize: 40, marginRight: 10 }}>$</span>*********
+            </div>
+            <IconoOjoTachado tamano={38} style={{ position: "absolute", right: 40, top: 222 }} />
+          </>
+        ) : (
+          <>
+            {/* Saldo (en la captura está tapado; lo ubicamos debajo del logo) */}
+            <div style={{ ...texto, left: 52, top: 206, fontSize: 21, fontWeight: 600, color: "rgba(255,255,255,0.75)" }}>
+              Saldo disponible
+            </div>
+            <div style={{ ...texto, left: 52, top: 232, fontSize: 40, fontWeight: 800, color: colores.blanco, letterSpacing: "-0.01em" }}>
+              $ {formatoNumero(saldo, 2)}
+            </div>
+            <IconoOjo tamano={34} style={{ position: "absolute", right: 48, top: 240 }} />
+          </>
+        )}
 
         {/* Tarjeta de acciones */}
         <div

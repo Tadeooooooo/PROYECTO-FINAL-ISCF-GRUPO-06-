@@ -46,6 +46,15 @@ export const IconoOjo: React.FC<P> = ({ tamano = 24, color = colores.blanco, sty
   </svg>
 );
 
+export const IconoOjoTachado: React.FC<P> = ({ tamano = 24, color = colores.blanco, style }) => (
+  <svg width={tamano} height={tamano} viewBox="0 0 24 24" style={style}>
+    <path d="M1.5 12S5.5 5 12 5s10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z" fill="none" stroke={color} strokeWidth={2} />
+    <circle cx={12} cy={12} r={3.2} fill={color} />
+    <path d="M3.5 3.5 L20.5 20.5" stroke={colores.azulApp} strokeWidth={4.5} strokeLinecap="round" />
+    <path d="M3.5 3.5 L20.5 20.5" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+  </svg>
+);
+
 export const IconoAvion: React.FC<P> = ({ tamano = 24, color = colores.blanco, style }) => (
   <svg width={tamano} height={tamano} viewBox="0 0 24 24" style={style}>
     <path d="M2.5 11 L21.5 2.5 L15 21.5 L11.2 12.8 Z" fill={color} />

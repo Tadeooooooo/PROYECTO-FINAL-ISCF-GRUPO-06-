@@ -316,22 +316,36 @@ def seccion(s):
     return "a"
 
 
-def componer():
+def componer(linea=None, seccion_fn=None, transponer=0, final=27.0, acorde_final="C", motivos=(2.0, 24.5)):
+    """Compone el tema. Los parámetros permiten variantes (otros acordes, tonalidad y secciones)."""
+    linea = linea or LINEA_ACORDES
+    seccion_fn = seccion_fn or seccion
+    t_ = transponer
+
+    def acorde_local(s):
+        for a, b, nombre in linea:
+            if a <= s < b:
+                return nombre
+        return acorde_final
+
+    def notas_de(nombre):
+        return [m + t_ for m in ACORDES[nombre]]
+
     n = muestras(DURACION + 2)
     buses = {k: np.zeros((2, n)) for k in ("bombo", "bateria", "bajo", "pluck", "pad", "arpegio", "campanas")}
     kicks = []
 
     # Pads: un acorde sostenido por tramo
-    for a, b, nombre in LINEA_ACORDES:
-        volumen = {"intro": 1.6, "noche": 1.3, "final": 2.0}.get(seccion(a), 0.55)
-        fc = 900 if seccion(a) in ("noche",) else 1500
-        sumar(buses["pad"], pad(ACORDES[nombre], b - a, fc=fc, ataque=0.25 if a else 0.05) * volumen, a)
+    for a, b, nombre in linea:
+        volumen = {"intro": 1.6, "noche": 1.3, "final": 2.0}.get(seccion_fn(a), 0.55)
+        fc = 900 if seccion_fn(a) in ("noche",) else 1500
+        sumar(buses["pad"], pad(notas_de(nombre), b - a, fc=fc, ataque=0.25 if a else 0.05) * volumen, a)
 
     tiempos = np.arange(0, DURACION, TIEMPO / 4)  # grilla de semicorcheas
     for paso, s in enumerate(tiempos):
-        sec = seccion(s)
+        sec = seccion_fn(s)
         pos = paso % 16  # posición dentro del compás (16 semicorcheas)
-        nombre = acorde_en(s)
+        nombre = acorde_local(s)
 
         # --- Batería
         if sec in ("a", "b") and pos % 4 == 0:
@@ -353,9 +367,9 @@ def componer():
 
         # --- Bajo: en los contratiempos (entre bombos)
         if sec in ("a", "b") and pos % 4 == 2:
-            sumar(buses["bajo"], bajo(RAIZ[nombre], TIEMPO * 0.4), s)
+            sumar(buses["bajo"], bajo(RAIZ[nombre] + t_, TIEMPO * 0.4), s)
         if sec == "noche" and pos == 0:
-            sumar(buses["bajo"], bajo(RAIZ[nombre], TIEMPO * 1.6) * 0.8, s)
+            sumar(buses["bajo"], bajo(RAIZ[nombre] + t_, TIEMPO * 1.6) * 0.8, s)
 
         # --- Pluck de acordes con ritmo 3-3-2
         if pos in (0, 6, 12) and sec not in ("pausa", "final"):
@@ -366,19 +380,19 @@ def componer():
             else:
                 brillo = 2600
             fuerza = 0.8 if sec == "intro" else 0.55
-            for m in ACORDES[nombre][-3:]:
+            for m in notas_de(nombre)[-3:]:
                 sumar(buses["pluck"], pluck(m + 12, brillo=int(brillo) // 100 * 100) * fuerza, s)
 
         # --- Arpegio (sección de números)
         if sec == "b":
-            notas = [m + 24 for m in ACORDES[nombre][-3:]]
+            notas = [m + 24 for m in notas_de(nombre)[-3:]]
             orden = [0, 1, 2, 1]
             sumar(buses["arpegio"], pluck(notas[orden[paso % 4]], dur=0.22, brillo=3800, decaimiento=0.09) * 0.35, s)
 
         # --- Campanitas nocturnas
         if sec == "noche" and pos in (2, 7, 11, 14):
             nota = rng.choice([76, 79, 81, 84, 86, 88])
-            sumar(buses["campanas"], paneo(campana(hz(nota), dur=1.5, decaimiento=0.35) * 0.18, rng.uniform(-0.6, 0.6)), s)
+            sumar(buses["campanas"], paneo(campana(hz(nota + t_), dur=1.5, decaimiento=0.35) * 0.18, rng.uniform(-0.6, 0.6)), s)
 
     # Intro: redoble y ruido que sube hacia el drop del segundo 2
     sumar(buses["bateria"], paneo(redoble(0.5), 0.1), 1.5)
@@ -387,14 +401,14 @@ def componer():
     sumar(buses["bateria"], sube, 0.4)
 
     # Motivo de campana en el drop (2 s) y en el cierre de marca (24,5 s)
-    for inicio in (2.0, 24.5):
+    for inicio in motivos:
         for i, m in enumerate([76, 79, 81, 84]):
-            sumar(buses["campanas"], paneo(campana(hz(m), dur=1.6, decaimiento=0.45) * 0.22, -0.3 + 0.2 * i), inicio + i * TIEMPO / 2)
+            sumar(buses["campanas"], paneo(campana(hz(m + t_), dur=1.6, decaimiento=0.45) * 0.22, -0.3 + 0.2 * i), inicio + i * TIEMPO / 2)
 
     # Acorde final brillante en 27 s (placa legal)
-    for m in ACORDES["C"]:
-        sumar(buses["pluck"], pluck(m + 12, dur=2.5, brillo=3200, decaimiento=0.9) * 0.6, 27.0)
-    sumar(buses["campanas"], paneo(campana(hz(84), dur=2.8, decaimiento=1.2) * 0.25, 0.2), 27.0)
+    for m in notas_de(acorde_final):
+        sumar(buses["pluck"], pluck(m + 12, dur=2.5, brillo=3200, decaimiento=0.9) * 0.6, final)
+    sumar(buses["campanas"], paneo(campana(hz(84 + t_), dur=2.8, decaimiento=1.2) * 0.25, 0.2), final)
 
     # --- Efectos de bus
     buses["arpegio"] = eco(buses["arpegio"], TIEMPO * 0.75, realim=0.35)[:, :n]
@@ -585,6 +599,14 @@ def sfx_boton():
     return x + estereo(click) * 0.4
 
 
+def sfx_bip():
+    """Bip corto y amable de lector de código."""
+    n = muestras(0.16)
+    t = tiempo(n)
+    x = (np.sin(2 * np.pi * 1760 * t) + 0.25 * np.sin(2 * np.pi * 3520 * t)) * np.minimum(1, t / 0.004) * np.exp(-t / 0.06)
+    return reverb(fundido(x), 0.15, ir=IR_CORTA)
+
+
 def generar_efectos():
     carpeta = os.path.join(SALIDA, "sfx")
     efectos = {
@@ -610,6 +632,7 @@ def generar_efectos():
         "entra-plata": sfx_entra_plata(),
         "ping": sfx_ping(),
         "boton": sfx_boton(),
+        "bip": sfx_bip(),
     }
     # 14 notas que suben (pentatónica de do) para los días del calendario
     escala = [67, 69, 72, 74, 76, 79, 81, 84, 86, 88, 91, 93, 96, 98]

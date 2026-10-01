@@ -28,3 +28,6 @@ export const fechaMenosDias = (isoFecha: string, dias: number): string => {
   const mm = String(fecha.getUTCMonth() + 1).padStart(2, "0");
   return `${dd}/${mm}/${fecha.getUTCFullYear()}`;
 };
+
+/** "30/09/2026" -> "2026-09-30" */
+export const fechaISO = (fecha: string) => fecha.split("/").reverse().join("-");

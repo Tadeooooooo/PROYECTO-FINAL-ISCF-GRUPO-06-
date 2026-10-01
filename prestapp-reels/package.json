@@ -29,10 +29,10 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
-    "borrador": "remotion render PrestappRendimientos out/prestapp-rendimientos-borrador-540x960.mp4 --scale=0.5",
-    "final": "node scripts/render-final.mjs",
+    "borrador": "node scripts/exportar.mjs borrador",
+    "final": "node scripts/exportar.mjs final",
     "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780",
-    "audio": "python3 scripts/audio/generar_audio.py"
+    "audio": "python3 scripts/audio/generar_audio.py && python3 scripts/audio/generar_tutoriales.py"
   },
   "sideEffects": [
     "*.css"
