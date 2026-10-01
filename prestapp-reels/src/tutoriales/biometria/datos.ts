@@ -23,7 +23,7 @@ export const datosBiometria = {
   cta: "Abrí Prestapp",
 
   // Sonido (0 = apagado, 1 = máximo)
-  volumenMusica: 0.5,
+  volumenMusica: 0.7,
   volumenEfectos: 1,
 };
 
