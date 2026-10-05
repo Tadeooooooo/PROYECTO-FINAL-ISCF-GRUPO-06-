@@ -8,6 +8,7 @@
   "dependencies": {
     "@remotion/cli": "4.0.530",
     "@remotion/fonts": "4.0.530",
+    "@remotion/layout-utils": "4.0.530",
     "@remotion/media": "4.0.530",
     "@remotion/tailwind-v4": "4.0.530",
     "@remotion/transitions": "4.0.530",
@@ -32,7 +33,8 @@
     "borrador": "node scripts/exportar.mjs borrador",
     "final": "node scripts/exportar.mjs final",
     "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780",
-    "audio": "python3 scripts/audio/generar_audio.py && python3 scripts/audio/generar_tutoriales.py"
+    "audio": "python3 scripts/audio/generar_audio.py && python3 scripts/audio/generar_tutoriales.py",
+    "link": "node scripts/exportar-link.mjs"
   },
   "sideEffects": [
     "*.css"
