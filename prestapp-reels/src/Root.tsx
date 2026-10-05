@@ -14,6 +14,8 @@ import { datosBiometria } from "./tutoriales/biometria/datos";
 import { VideoBiometria } from "./tutoriales/biometria/VideoBiometria";
 import { datosLink } from "./piezas/link/datos";
 import { duracionLink, LinkPrestapp } from "./piezas/link/LinkPrestapp";
+import { datosContador } from "./piezas/contador/datos";
+import { Contador, duracionContador } from "./piezas/contador/Contador";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -96,6 +98,28 @@ export const RemotionRoot: React.FC = () => {
           height={320}
           defaultProps={{ ...datosLink, fondo: "#00FF00", sombra: false }}
           calculateMetadata={({ props }) => ({ durationInFrames: duracionLink(props) })}
+        />
+        {/* Contador de $ sin fondo */}
+        <Composition
+          id="Contador"
+          component={Contador}
+          durationInFrames={320}
+          fps={60}
+          width={1080}
+          height={400}
+          defaultProps={datosContador}
+          calculateMetadata={({ props }) => ({ durationInFrames: duracionContador(props) })}
+        />
+        {/* Con fondo fucsia (no verde, porque el $ es verde) para sacarlo con croma */}
+        <Composition
+          id="ContadorCroma"
+          component={Contador}
+          durationInFrames={320}
+          fps={60}
+          width={1080}
+          height={400}
+          defaultProps={{ ...datosContador, fondo: "#FF00FF", sombra: false }}
+          calculateMetadata={({ props }) => ({ durationInFrames: duracionContador(props) })}
         />
       </Folder>
     </>

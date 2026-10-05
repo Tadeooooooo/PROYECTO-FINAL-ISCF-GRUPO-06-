@@ -34,7 +34,8 @@
     "final": "node scripts/exportar.mjs final",
     "cuadros": "node scripts/cuadros-clave.mjs out/cuadros 0 70 250 450 600 760 960 1080 1270 1440 1580 1780",
     "audio": "python3 scripts/audio/generar_audio.py && python3 scripts/audio/generar_tutoriales.py",
-    "link": "node scripts/exportar-link.mjs"
+    "link": "node scripts/exportar-piezas.mjs link",
+    "contador": "node scripts/exportar-piezas.mjs contador"
   },
   "sideEffects": [
     "*.css"
