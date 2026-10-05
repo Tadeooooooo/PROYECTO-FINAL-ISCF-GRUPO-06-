@@ -22,6 +22,16 @@ const LETRA_ESPACIADO = -0.02;
 const TAM_MAXIMO = 190; // px
 const MARGEN = 100; // px a cada lado (más que los 80 px de zona segura)
 const GOLPE = 0.07; // cuánto crece el número en el "golpe" final
+// Relieve: cantidad de capas y desplazamiento de cada una (en px, para una letra de 170 px).
+const RELIEVE_CAPAS = 8;
+const RELIEVE_PASO = { x: 0.5, y: 1.2 };
+
+// Costado sólido debajo del texto: capas de sombra sin desenfoque, una corrida respecto de la otra.
+const relieve = (color: string, tam: number) => {
+  const x = (RELIEVE_PASO.x * tam) / 170;
+  const y = (RELIEVE_PASO.y * tam) / 170;
+  return Array.from({ length: RELIEVE_CAPAS }, () => `drop-shadow(${x}px ${y}px 0px ${color})`).join(" ");
+};
 
 // Momentos, en cuadros (60 = 1 s).
 const ENTRADA = 20;
@@ -83,11 +93,13 @@ const Destello: React.FC<{ tam: number; color: string }> = ({ tam, color }) => (
 );
 
 // Rueda de una cifra: una tira 0-9-0 que se desplaza; con estelas si gira rápido.
-const Rueda: React.FC<{ posicion: number; velocidad: number; anchoEm: number }> = ({
-  posicion,
-  velocidad,
-  anchoEm,
-}) => {
+const Rueda: React.FC<{
+  posicion: number;
+  velocidad: number;
+  anchoEm: number;
+  cara: React.CSSProperties;
+  filtro?: string;
+}> = ({ posicion, velocidad, anchoEm, cara, filtro }) => {
   const estela = interpolate(velocidad, [1, 4], [0, 1], fijo);
   const tira = (desvio: number, opacidad: number, key: string) => (
     <span
@@ -102,10 +114,11 @@ const Rueda: React.FC<{ posicion: number; velocidad: number; anchoEm: number }> 
         flexDirection: "column",
         alignItems: "center",
         opacity: opacidad,
+        filter: filtro,
       }}
     >
       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((n, i) => (
-        <span key={i} style={{ height: "1em", lineHeight: 1 }}>
+        <span key={i} style={{ height: "1em", lineHeight: 1, ...cara }}>
           {n}
         </span>
       ))}
@@ -189,12 +202,25 @@ export const Contador: React.FC<DatosContador> = (d) => {
   });
   const escalaTotal = (0.7 + 0.3 * entrada) * (1 + GOLPE * golpe) * (1 - 0.1 * sale);
 
+  // Sombras: una de contacto pegada al número y otra amplia y difusa, más el resplandor del final.
   const filtros = d.sombra
     ? [
-        "drop-shadow(0px 6px 18px rgba(10,10,58,0.45))",
+        "drop-shadow(0px 3px 4px rgba(5,5,40,0.45))",
+        "drop-shadow(0px 16px 26px rgba(5,5,40,0.55))",
         brillo > 0 ? `drop-shadow(0px 0px ${24 + 30 * brillo}px rgba(78,193,72,${0.7 * brillo}))` : "",
       ].join(" ")
     : undefined;
+
+  // El relieve se aplica a cada cifra antes de desvanecerla, así no se acumula en las partes transparentes.
+  const relieveNumeros = d.relieve ? relieve(d.colorRelieveNumeros, tam) : undefined;
+
+  // Cara de los números: degradé muy suave hacia abajo para que se vean con volumen.
+  const cara: React.CSSProperties = {
+    backgroundImage: `linear-gradient(180deg, ${d.colorNumeros} 35%, color-mix(in srgb, ${d.colorNumeros} 84%, ${d.colorRelieveNumeros}) 100%)`,
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
+  };
 
   // Al terminar de contar, cada cifra pasa de un ancho fijo a su ancho natural.
   const asentado = interpolate(frame, [fin - 2, fin + 14], [0, 1], {
@@ -227,7 +253,7 @@ export const Contador: React.FC<DatosContador> = (d) => {
           WebkitMaskImage: mascara,
         }}
       >
-        <Rueda posicion={giro} velocidad={velocidad / 10 ** j} anchoEm={anchoDigito} />
+        <Rueda posicion={giro} velocidad={velocidad / 10 ** j} anchoEm={anchoDigito} cara={cara} filtro={relieveNumeros} />
       </span>,
     );
     const k = j - d.decimales; // lugar entero (0 = unidades)
@@ -242,6 +268,8 @@ export const Contador: React.FC<DatosContador> = (d) => {
             overflow: "hidden",
             textAlign: "center",
             opacity: opacidad,
+            filter: relieveNumeros,
+            ...cara,
           }}
         >
           {separador}
@@ -301,6 +329,7 @@ export const Contador: React.FC<DatosContador> = (d) => {
               color: d.colorSigno,
               fontSize: `${TAM_SIGNO}em`,
               marginRight: `${SEPARACION_SIGNO}em`,
+              filter: d.relieve ? relieve(d.colorRelieveSigno, tam) : undefined,
             }}
           >
             {d.signo}

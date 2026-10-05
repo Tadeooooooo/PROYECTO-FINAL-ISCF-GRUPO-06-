@@ -1,6 +1,7 @@
 // Exporta las piezas sueltas (link, contador) en tres formatos:
 //  - .mov sin fondo: para Premiere, Final Cut, DaVinci, After Effects, CapCut de compu.
-//    Va en ProRes 4444 si pesa menos de ~29 MB; si no, en PNG (sin pérdida, también estándar en .mov).
+//    Va en ProRes 4444 si pesa menos de ~29 MB; si no, en PNG (sin pérdida, también estándar en .mov),
+//    y si aun así no entra, en PNG a 30 cuadros por segundo.
 //  - .webm (VP9) sin fondo: para editores web y navegadores.
 //  - .mp4 con fondo de color liso: para editores de celular (se saca con "croma" / "chroma key").
 // Uso: node scripts/exportar-piezas.mjs <link|contador|todas> [--browser-executable=ruta]
@@ -58,9 +59,14 @@ for (const nombre of nombres) {
     if (statSync(salidaMov).size < 29e6) { formato = `ProRes 4444 (calidad ${calidad})`; break; }
   }
   // Si igual pesa demasiado (mucho desenfoque o degradé), PNG dentro del .mov: sin pérdida y más liviano.
+  // Y si todavía no entra en ~29 MB, el .mov va a 30 cuadros por segundo (el .webm y el .mp4 siguen a 60).
   if (!formato) {
     ffmpeg("-c:v", "png", "-pix_fmt", "rgba", salidaMov);
     formato = "PNG sin pérdida";
+    if (statSync(salidaMov).size >= 29e6) {
+      ffmpeg("-r", "30", "-c:v", "png", "-pix_fmt", "rgba", salidaMov);
+      formato = "PNG sin pérdida, 30 cuadros por segundo";
+    }
   }
   rmSync(cuadros, { recursive: true, force: true });
   console.log(`listo: ${salidaMov} (${formato}, ${(statSync(salidaMov).size / 1e6).toFixed(1)} MB)`);

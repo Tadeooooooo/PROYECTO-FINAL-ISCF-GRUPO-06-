@@ -20,6 +20,11 @@ export const datosContador = {
   /** Color de los números y del signo. */
   colorNumeros: "#FFFFFF",
   colorSigno: "#4EC148",
+  /** Relieve 3D: un "costado" sólido debajo de cada cifra para darle profundidad. */
+  relieve: true,
+  /** Color del costado de los números y del signo. */
+  colorRelieveNumeros: "#2422A9",
+  colorRelieveSigno: "#2A7F27",
 
   /** "transparente" = sin fondo. Un color = fondo liso para sacarlo con croma. */
   fondo: "transparente",
