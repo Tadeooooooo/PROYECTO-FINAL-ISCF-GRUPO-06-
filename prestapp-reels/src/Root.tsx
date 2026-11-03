@@ -1,5 +1,5 @@
 import "./index.css";
-import { Composition, Folder } from "remotion";
+import { Composition, Folder, Still } from "remotion";
 import { datosRendimientos } from "./datos/rendimientos";
 import { VideoRendimientos } from "./Video";
 import { datosQR } from "./tutoriales/qr/datos";
@@ -16,6 +16,7 @@ import { datosLink } from "./piezas/link/datos";
 import { duracionLink, LinkPrestapp } from "./piezas/link/LinkPrestapp";
 import { datosContador } from "./piezas/contador/datos";
 import { Contador, duracionContador } from "./piezas/contador/Contador";
+import { ALTO_PORTADA, ANCHO_PORTADA, NOMBRES_PORTADAS, PortadaCelular } from "./piezas/portadas/Portadas";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -121,6 +122,18 @@ export const RemotionRoot: React.FC = () => {
           defaultProps={{ ...datosContador, fondo: "#FF00FF", sombra: false }}
           calculateMetadata={({ props }) => ({ durationInFrames: duracionContador(props) })}
         />
+      </Folder>
+      <Folder name="Portadas">
+        {NOMBRES_PORTADAS.map((video) => (
+          <Still
+            key={video}
+            id={`Portada-${video}`}
+            component={PortadaCelular}
+            width={ANCHO_PORTADA}
+            height={ALTO_PORTADA}
+            defaultProps={{ video }}
+          />
+        ))}
       </Folder>
     </>
   );

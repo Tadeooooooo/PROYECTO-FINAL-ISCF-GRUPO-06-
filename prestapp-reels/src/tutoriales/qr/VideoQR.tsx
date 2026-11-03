@@ -123,7 +123,7 @@ const GanchoQR: React.FC<{ readonly datos: DatosQR }> = ({ datos }) => {
   );
 };
 
-const PantallaEscaneo: React.FC<{ readonly f: number }> = ({ f }) => {
+export const PantallaEscaneo: React.FC<{ readonly f: number }> = ({ f }) => {
   const leido = interpolate(
     f,
     [CIERRE_ESCANEO - 6, CIERRE_ESCANEO + 6],

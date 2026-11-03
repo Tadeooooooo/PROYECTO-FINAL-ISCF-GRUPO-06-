@@ -141,7 +141,7 @@ const GanchoServicios: React.FC<{ readonly datos: DatosServicios }> = ({
   );
 };
 
-const PantallaListaServicios: React.FC<{
+export const PantallaListaServicios: React.FC<{
   readonly datos: DatosServicios;
   readonly resaltar: number;
 }> = ({ datos, resaltar }) => (

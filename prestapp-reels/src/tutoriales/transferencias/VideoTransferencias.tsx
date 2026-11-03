@@ -166,7 +166,7 @@ const GanchoTransferencias: React.FC<{
   );
 };
 
-const PantallaAlias: React.FC<{
+export const PantallaAlias: React.FC<{
   readonly datos: DatosTransferencias;
   readonly f: number;
 }> = ({ datos, f }) => {

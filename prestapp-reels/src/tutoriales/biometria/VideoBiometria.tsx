@@ -264,7 +264,7 @@ const PERFIL: [string, string][] = [
 ];
 const Y_HUELLA = 1748;
 
-const PantallaMiCuenta: React.FC<{
+export const PantallaMiCuenta: React.FC<{
   readonly desplazamiento: number;
   readonly encendido: number;
 }> = ({ desplazamiento, encendido }) => {

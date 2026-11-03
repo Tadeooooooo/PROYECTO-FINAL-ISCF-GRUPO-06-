@@ -145,7 +145,7 @@ const GanchoRecargas: React.FC<{ readonly datos: DatosRecargas }> = ({
   );
 };
 
-const PantallaCompanias: React.FC<{
+export const PantallaCompanias: React.FC<{
   readonly datos: DatosRecargas;
   readonly resaltar: number;
 }> = ({ datos, resaltar }) => (
