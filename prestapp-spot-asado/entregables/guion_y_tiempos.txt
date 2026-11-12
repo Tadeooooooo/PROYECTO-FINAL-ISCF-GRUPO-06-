@@ -1,0 +1,93 @@
+PRESTAPP · SPOT INSTITUCIONAL PARA PANTALLAS LED
+1920x1080 · 30 fps · 1344 cuadros = 44,80 s · loop: empieza y termina en el fondo azul limpio
+Timecodes en formato HH:MM:SS:CC (CC = cuadro dentro del segundo, 0-29).
+
+GUION Y TIEMPOS
+===============
+
+ESCENA 1 · APERTURA
+  En pantalla: "Dale cuotas a todo"
+    · "Dale cuotas a todo" entra 00:00:00:16 → quieto 00:00:01:04
+  Entra:       00:00:00:16  (0,53 s)
+  Quieto desde 00:00:01:04  (1,13 s)
+  Sale:        00:00:04:18 → 00:00:05:00  (4,60 → 5,00 s)
+  Locución sugerida: "¿Ya conocés Prestapp?"
+
+ESCENA 2 · QUÉ ES
+  En pantalla: "Tu billetera digital, de Entre Ríos."
+    · "Tu billetera digital, de Entre Ríos." entra 00:00:05:02 → quieto 00:00:05:20
+  Entra:       00:00:05:02  (5,07 s)
+  Quieto desde 00:00:05:20  (5,67 s)
+  Sale:        00:00:10:16 → 00:00:10:28  (10,53 → 10,93 s)
+  Locución sugerida: "La billetera digital de Entre Ríos, pensada para tu día a día."
+
+ESCENA 3 · PAGÁ CON QR
+  En pantalla: "PAGÁ CON QR" + "Rápido y sin efectivo."
+    · "PAGÁ CON QR" entra 00:00:11:04 → quieto 00:00:11:18
+    · "Rápido y sin efectivo." entra 00:00:11:06 → quieto 00:00:11:24
+  Entra:       00:00:11:04  (11,13 s)
+  Quieto desde 00:00:11:24  (11,80 s)
+  Sale:        00:00:16:20 → 00:00:17:02  (16,67 → 17,07 s)
+  Locución sugerida: "Pagá con QR en comercios, rápido y sin efectivo."
+
+ESCENA 4 · CUOTAS
+  En pantalla: "CUOTAS" + "con tu DNI, en comercios adheridos."
+    · "CUOTAS" entra 00:00:18:00 → quieto 00:00:18:14
+    · "con tu DNI, en comercios adheridos." entra 00:00:18:12 → quieto 00:00:19:00
+  Entra:       00:00:18:00  (18,00 s)
+  Quieto desde 00:00:19:00  (19,00 s)
+  Sale:        00:00:24:24 → 00:00:25:06  (24,80 → 25,20 s)
+  Locución sugerida: "Y en los comercios adheridos, comprá en cuotas con tu DNI."
+
+ESCENA 5 · SERVICIOS
+  En pantalla: "+5.000 empresas" + "para pagar tus servicios."
+    · "+5.000 empresas" entra 00:00:25:24 → quieto 00:00:26:08
+    · "para pagar tus servicios." entra 00:00:25:28 → quieto 00:00:26:12
+  Entra:       00:00:25:24  (25,80 s)
+  Quieto desde 00:00:27:08  (27,27 s)
+  Sale:        00:00:31:04 → 00:00:31:16  (31,13 → 31,53 s)
+  Locución sugerida: "Pagá tus servicios en más de cinco mil empresas, desde el celular."
+
+ESCENA 6 · SEGURIDAD
+  En pantalla: "Tu dinero, protegido." + "Ingreso con biometría"
+    · "Tu dinero, protegido." entra 00:00:31:18 → quieto 00:00:32:00
+    · "Ingreso con biometría" entra 00:00:31:28 → quieto 00:00:32:12
+  Entra:       00:00:31:18  (31,60 s)
+  Quieto desde 00:00:32:12  (32,40 s)
+  Sale:        00:00:36:16 → 00:00:36:28  (36,53 → 36,93 s)
+  Locución sugerida: "Con ingreso por biometría, tu dinero está protegido."
+
+ESCENA 7 · CIERRE
+  En pantalla: "Descargá la app" + "@prestapp.ar · prestapp.com.ar"
+    · "Descargá la app" entra 00:00:37:08 → quieto 00:00:37:26
+    · "@prestapp.ar · prestapp.com.ar" entra 00:00:37:22 → quieto 00:00:38:10
+  Entra:       00:00:37:08  (37,27 s)
+  Quieto desde 00:00:38:10  (38,33 s)
+  Sale:        00:00:44:09 → 00:00:44:24  (44,30 → 44,80 s)
+  Locución sugerida: "Prestapp. Dale cuotas a todo. Descargala hoy."
+
+EFECTOS DE SONIDO (prestapp_spot_SFX.wav, sincronizado desde 00:00)
+=====================================================================
+  00:00:00:00  (0,00 s)  Apertura del logo: swell de aire suave y grave (1,2 s)
+  00:00:13:06  (13,20 s)  Check del QR: tick suave tipo interfaz
+  00:00:18:01  (18,03 s)  Entrada de CUOTAS: impacto grave, redondo y corto
+  00:00:34:14  (34,47 s)  Check de la huella: mismo tick en otra afinación
+  00:00:37:02  (37,07 s)  Entrada del cierre: swell suave más corto
+
+TABLA DE TIEMPOS DE LECTURA
+===========================
+Regla: quieto ≥ max(2,5 s; 1,5 s + 0,35 s × palabras). Entrada ≤ 0,6 s. Salida ≤ 0,4 s. Sin superposición.
+
+Esc | Palabras | Mínimo | Real   | Entrada (texto más lento) | Salida | Cumple
+1   | 4        | 2,90 s | 3,47 s | 0,60 s                  | 0,40 s | sí
+2   | 6        | 3,60 s | 4,87 s | 0,60 s                  | 0,40 s | sí
+3   | 7        | 3,95 s | 4,87 s | 0,60 s                  | 0,40 s | sí
+4   | 7        | 3,95 s | 5,80 s | 0,60 s                  | 0,40 s | sí
+5   | 6        | 3,60 s | 3,87 s | 0,47 s                  | 0,40 s | sí
+6   | 6        | 3,60 s | 4,13 s | 0,47 s                  | 0,40 s | sí
+7   | 5        | 3,50 s | 5,97 s | 0,60 s                  | 0,50 s | sí
+
+Notas:
+- Escena 4: el brief pide además "CUOTAS" y subtítulo quietos al menos 3,5 s.
+- Escena 5: los textos entran en 0,6 s; el tiempo quieto se cuenta recién desde que el contador llega a 5.000.
+- Escena 7: el cierre queda completamente quieto y en los últimos 15 cuadros (0,5 s) se funde al fondo, como pide el brief.

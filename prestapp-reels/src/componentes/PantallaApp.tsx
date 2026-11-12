@@ -53,7 +53,9 @@ export const PantallaApp: React.FC<{
   readonly desplazamiento?: number;
   /** Si se pasa, muestra el encabezado real de la app: saludo + saldo oculto con asteriscos. */
   readonly saludo?: string;
-}> = ({ saldo, tnaTexto, movimientos, concepto, tituloMovimientos, verMas, desplazamiento = 0, saludo }) => {
+  /** Tapa los montos de los movimientos con asteriscos (como el saldo oculto de la app). */
+  readonly montosOcultos?: boolean;
+}> = ({ saldo, tnaTexto, movimientos, concepto, tituloMovimientos, verMas, desplazamiento = 0, saludo, montosOcultos = false }) => {
   const texto: React.CSSProperties = { fontFamily: fuenteTexto, position: "absolute" };
 
   return (
@@ -226,7 +228,7 @@ export const PantallaApp: React.FC<{
                       color: brillo > 0.05 ? "#2F9A2A" : colores.azulApp,
                     }}
                   >
-                    $ {formatoNumero(m.monto, 2)}
+                    $ {montosOcultos ? "**,**" : formatoNumero(m.monto, 2)}
                   </div>
                 </div>
               );

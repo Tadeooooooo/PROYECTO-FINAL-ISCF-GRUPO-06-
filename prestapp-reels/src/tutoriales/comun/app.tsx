@@ -773,8 +773,11 @@ export const PantallaInicio: React.FC<{
   readonly saludo: string;
   readonly tna: string;
   readonly fecha: string;
-}> = ({ saludo, tna, fecha }) => (
+  /** Tapa con asteriscos los montos de los movimientos. */
+  readonly montosOcultos?: boolean;
+}> = ({ saludo, tna, fecha, montosOcultos }) => (
   <PantallaApp
+    montosOcultos={montosOcultos}
     saldo={0}
     saludo={saludo}
     tnaTexto={tna}

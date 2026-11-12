@@ -16,7 +16,7 @@ import { datosLink } from "./piezas/link/datos";
 import { duracionLink, LinkPrestapp } from "./piezas/link/LinkPrestapp";
 import { datosContador } from "./piezas/contador/datos";
 import { Contador, duracionContador } from "./piezas/contador/Contador";
-import { ALTO_PORTADA, ANCHO_PORTADA, NOMBRES_PORTADAS, PortadaCelular } from "./piezas/portadas/Portadas";
+import { ALTO_PORTADA, ANCHO_PORTADA, CapturaPantalla, NOMBRES_CAPTURAS, NOMBRES_PORTADAS, PortadaCelular } from "./piezas/portadas/Portadas";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -132,6 +132,16 @@ export const RemotionRoot: React.FC = () => {
             width={ANCHO_PORTADA}
             height={ALTO_PORTADA}
             defaultProps={{ video }}
+          />
+        ))}
+        {NOMBRES_CAPTURAS.map((pantalla) => (
+          <Still
+            key={pantalla}
+            id={`Captura-${pantalla}`}
+            component={CapturaPantalla}
+            width={736}
+            height={1600}
+            defaultProps={{ pantalla }}
           />
         ))}
       </Folder>

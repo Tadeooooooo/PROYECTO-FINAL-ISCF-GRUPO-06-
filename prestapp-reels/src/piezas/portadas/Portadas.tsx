@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { altoCelular, Celular } from "../../componentes/Celular";
 import { PantallaApp } from "../../componentes/PantallaApp";
+import { PantallaInicio } from "../../tutoriales/comun/app";
 import { datosRendimientos } from "../../datos/rendimientos";
 import { PantallaMiCuenta } from "../../tutoriales/biometria/VideoBiometria";
 import { PantallaEscaneo } from "../../tutoriales/qr/VideoQR";
@@ -60,4 +61,20 @@ export const PortadaCelular: React.FC<{ readonly video: string }> = ({ video }) 
       {PANTALLAS[video]()}
     </Celular>
   </AbsoluteFill>
+);
+
+// ---------------------------------------------------------------------------
+// Capturas sueltas (solo la pantalla, 736x1600) para usar dentro de otros proyectos
+// (por ejemplo, el spot institucional). Sin cifras: montos y tasa tapados con asteriscos.
+const CAPTURAS: Record<string, () => React.ReactNode> = {
+  inicio: () => <PantallaInicio saludo="¡Hola!" tna="**,**%" fecha="2026-09-30" montosOcultos />,
+  qr: () => <PantallaEscaneo f={60} />,
+  servicios: () => <PantallaListaServicios datos={datosServicios} resaltar={0} />,
+  biometria: () => <PantallaMiCuenta desplazamiento={800} encendido={1} />,
+};
+
+export const NOMBRES_CAPTURAS = Object.keys(CAPTURAS);
+
+export const CapturaPantalla: React.FC<{ readonly pantalla: string }> = ({ pantalla }) => (
+  <AbsoluteFill style={{ backgroundColor: "#F4F4F4" }}>{CAPTURAS[pantalla]()}</AbsoluteFill>
 );

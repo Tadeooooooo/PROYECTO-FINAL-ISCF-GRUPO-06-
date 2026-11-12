@@ -1,0 +1,214 @@
+{
+  "fps": 30,
+  "duracion": 1344,
+  "notas": "Tiempos en cuadros absolutos (30 = 1 s). Por texto: entra = empieza a aparecer; asentado = quedo quieto. Por escena: sale = empieza a irse; fin = ya no se ve.",
+  "escenas": [
+    {
+      "id": 1,
+      "nombre": "Apertura",
+      "desde": 0,
+      "hasta": 150,
+      "textos": [
+        {
+          "texto": "Dale cuotas a todo",
+          "palabras": 4,
+          "entra": 16,
+          "asentado": 34
+        }
+      ],
+      "palabras": 4,
+      "entra": 16,
+      "asentado": 34,
+      "sale": 138,
+      "fin": 150,
+      "locucion": "¿Ya conocés Prestapp?"
+    },
+    {
+      "id": 2,
+      "nombre": "Qué es",
+      "desde": 138,
+      "hasta": 330,
+      "textos": [
+        {
+          "texto": "Tu billetera digital, de Entre Ríos.",
+          "palabras": 6,
+          "entra": 152,
+          "asentado": 170
+        }
+      ],
+      "palabras": 6,
+      "entra": 152,
+      "asentado": 170,
+      "sale": 316,
+      "fin": 328,
+      "locucion": "La billetera digital de Entre Ríos, pensada para tu día a día."
+    },
+    {
+      "id": 3,
+      "nombre": "Pagá con QR",
+      "desde": 316,
+      "hasta": 548,
+      "textos": [
+        {
+          "texto": "PAGÁ CON QR",
+          "palabras": 3,
+          "entra": 334,
+          "asentado": 348
+        },
+        {
+          "texto": "Rápido y sin efectivo.",
+          "palabras": 4,
+          "entra": 336,
+          "asentado": 354
+        }
+      ],
+      "palabras": 7,
+      "entra": 334,
+      "asentado": 354,
+      "sale": 500,
+      "fin": 512,
+      "locucion": "Pagá con QR en comercios, rápido y sin efectivo."
+    },
+    {
+      "id": 4,
+      "nombre": "Cuotas",
+      "desde": 530,
+      "hasta": 780,
+      "textos": [
+        {
+          "texto": "CUOTAS",
+          "palabras": 1,
+          "entra": 540,
+          "asentado": 554
+        },
+        {
+          "texto": "con tu DNI, en comercios adheridos.",
+          "palabras": 6,
+          "entra": 552,
+          "asentado": 570
+        }
+      ],
+      "palabras": 7,
+      "entra": 540,
+      "asentado": 570,
+      "sale": 744,
+      "fin": 756,
+      "locucion": "Y en los comercios adheridos, comprá en cuotas con tu DNI."
+    },
+    {
+      "id": 5,
+      "nombre": "Servicios",
+      "desde": 744,
+      "hasta": 960,
+      "textos": [
+        {
+          "texto": "+5.000 empresas",
+          "palabras": 2,
+          "entra": 774,
+          "asentado": 788
+        },
+        {
+          "texto": "para pagar tus servicios.",
+          "palabras": 4,
+          "entra": 778,
+          "asentado": 792
+        }
+      ],
+      "palabras": 6,
+      "entra": 774,
+      "asentado": 818,
+      "sale": 934,
+      "fin": 946,
+      "locucion": "Pagá tus servicios en más de cinco mil empresas, desde el celular.",
+      "notaAsentado": "el contador llega a 5.000 en el cuadro 818"
+    },
+    {
+      "id": 6,
+      "nombre": "Seguridad",
+      "desde": 930,
+      "hasta": 1112,
+      "textos": [
+        {
+          "texto": "Tu dinero, protegido.",
+          "palabras": 3,
+          "entra": 948,
+          "asentado": 960
+        },
+        {
+          "texto": "Ingreso con biometría",
+          "palabras": 3,
+          "entra": 958,
+          "asentado": 972
+        }
+      ],
+      "palabras": 6,
+      "entra": 948,
+      "asentado": 972,
+      "sale": 1096,
+      "fin": 1108,
+      "locucion": "Con ingreso por biometría, tu dinero está protegido."
+    },
+    {
+      "id": 7,
+      "nombre": "Cierre",
+      "desde": 1096,
+      "hasta": 1344,
+      "textos": [
+        {
+          "texto": "Descargá la app",
+          "palabras": 3,
+          "entra": 1118,
+          "asentado": 1136
+        },
+        {
+          "texto": "@prestapp.ar · prestapp.com.ar",
+          "palabras": 2,
+          "entra": 1132,
+          "asentado": 1150
+        }
+      ],
+      "palabras": 5,
+      "entra": 1118,
+      "asentado": 1150,
+      "sale": 1329,
+      "fin": 1344,
+      "minimoBrief": 3.5,
+      "locucion": "Prestapp. Dale cuotas a todo. Descargala hoy."
+    }
+  ],
+  "celular": {
+    "entra1": 138,
+    "cambioQR": 318,
+    "saleIzquierda1": 500,
+    "entra2": 744,
+    "cambioBiometria": 930,
+    "saleIzquierda2": 1096
+  },
+  "sfx": [
+    {
+      "nombre": "swell-apertura",
+      "cuadro": 0,
+      "descripcion": "Apertura del logo: swell de aire suave y grave (1,2 s)"
+    },
+    {
+      "nombre": "tick-qr",
+      "cuadro": 396,
+      "descripcion": "Check del QR: tick suave tipo interfaz"
+    },
+    {
+      "nombre": "impacto-cuotas",
+      "cuadro": 541,
+      "descripcion": "Entrada de CUOTAS: impacto grave, redondo y corto"
+    },
+    {
+      "nombre": "tick-huella",
+      "cuadro": 1034,
+      "descripcion": "Check de la huella: mismo tick en otra afinación"
+    },
+    {
+      "nombre": "swell-cierre",
+      "cuadro": 1112,
+      "descripcion": "Entrada del cierre: swell suave más corto"
+    }
+  ]
+}
