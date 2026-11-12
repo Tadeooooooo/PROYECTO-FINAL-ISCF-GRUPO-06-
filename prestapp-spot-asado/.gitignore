@@ -11,3 +11,4 @@ entregables/*.mov
 entregables/*.mp4
 entregables/*.wav
 __pycache__
+entregables/partes/
