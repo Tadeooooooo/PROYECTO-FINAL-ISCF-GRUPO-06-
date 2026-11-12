@@ -3,10 +3,13 @@
 import fs from "node:fs";
 
 const g = JSON.parse(fs.readFileSync("src/guion.json", "utf8"));
-const fps = g.fps;
+const fps = g.fps; // cuadros base del guion
+const fpsSalida = g.fpsSalida;
+// Timecode del video final (60 fps): HH:MM:SS:CC con CC de 0 a 59.
 const tc = (f) => {
-  const s = Math.floor(f / fps);
-  return `00:${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}:${String(f % fps).padStart(2, "0")}`;
+  const r = Math.round((f * fpsSalida) / fps);
+  const s = Math.floor(r / fpsSalida);
+  return `00:${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}:${String(r % fpsSalida).padStart(2, "0")}`;
 };
 const seg = (f) => (f / fps).toFixed(2).replace(".", ",");
 
@@ -27,8 +30,8 @@ g.escenas.forEach((e, i) => {
 
 const L = [];
 L.push("PRESTAPP · SPOT INSTITUCIONAL PARA PANTALLAS LED");
-L.push(`1920x1080 · ${fps} fps · ${g.duracion} cuadros = ${seg(g.duracion)} s · loop: empieza y termina en el fondo azul limpio`);
-L.push("Timecodes en formato HH:MM:SS:CC (CC = cuadro dentro del segundo, 0-29).");
+L.push(`1920x1080 · ${fpsSalida} fps · ${(g.duracion * fpsSalida) / fps} cuadros = ${seg(g.duracion)} s · loop: empieza y termina en el fondo azul limpio`);
+L.push(`Timecodes en formato HH:MM:SS:CC (CC = cuadro dentro del segundo, 0-${fpsSalida - 1}).`);
 L.push("");
 L.push("GUION Y TIEMPOS");
 L.push("===============");
@@ -60,8 +63,8 @@ for (const f of filas) {
 L.push("");
 L.push("Notas:");
 L.push("- Escena 4: el brief pide además \"CUOTAS\" y subtítulo quietos al menos 3,5 s.");
-L.push("- Escena 5: los textos entran en 0,6 s; el tiempo quieto se cuenta recién desde que el contador llega a 5.000.");
-L.push("- Escena 7: el cierre queda completamente quieto y en los últimos 15 cuadros (0,5 s) se funde al fondo, como pide el brief.");
+L.push("- Escena 5: sin cifras; el celular muestra la lista de \"Rendimiento Saldo\" con los montos tapados.");
+L.push("- Escena 7: el cierre queda completamente quieto y en los últimos 0,5 s se funde al fondo, como pide el brief.");
 fs.writeFileSync(process.argv[2], L.join("\n") + "\n");
 console.log(L.slice(L.indexOf("TABLA DE TIEMPOS DE LECTURA")).join("\n"));
 if (!ok) {

@@ -1,6 +1,6 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
-import { C, FUENTE, sale as curvaSalida, suave, tramo } from "../marca";
+import { interpolate} from "remotion";
+import { C, FUENTE, sale as curvaSalida, suave, tramo, useCuadro } from "../marca";
 
 // Reveal con máscara palabra por palabra.
 // - Cada palabra sube desde abajo de su máscara con un leve desenfoque de movimiento y queda quieta.
@@ -54,7 +54,7 @@ export const Revelar: React.FC<{
   readonly desfase?: number;
   readonly style?: React.CSSProperties;
 }> = ({ lineas, entra, sale, tamano, peso = 800, color = C.blanco, alinear = "left", interlineado = 1.08, salidaX = 0, palabrasBloque, desfase = 0, style }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const palabras = partir(lineas);
   const total = palabras.flat().length;
   const dur = duracionPalabra(palabrasBloque ?? total);
@@ -124,7 +124,7 @@ export const Pildora: React.FC<{ readonly texto: string; readonly entra: number;
   sale,
   salidaX = 0,
 }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const v = tramo(f, entra, entra + 14);
   const s = tramo(f, sale, sale + MAX_SALIDA, curvaSalida);
   return (
@@ -160,7 +160,7 @@ export const Chip: React.FC<{
   readonly salidaX?: number;
   readonly style?: React.CSSProperties;
 }> = ({ icono, texto, entra, sale, salidaX = 0, style }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const v = tramo(f, entra, entra + 14);
   const s = tramo(f, sale, sale + MAX_SALIDA, curvaSalida);
   return (

@@ -1,30 +1,30 @@
 import React from "react";
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile} from "remotion";
+import { LogoCuotas } from "../componentes/Logo";
 import { Revelar } from "../componentes/Texto";
-import { escena, RESORTE, sale as curvaSalida, tramo } from "../marca";
+import { escena, RESORTE, sale as curvaSalida, tramo, useCuadro, FPS_BASE } from "../marca";
 
 // Entrada en stagger de cada elemento del cierre (sube y aparece desde la derecha, siguiendo la cámara).
 const useEntrada = (desde: number) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const v = tramo(f, desde, desde + 18);
   return { opacity: v, translate: `${(1 - v) * 120}px ${(1 - v) * 30}px` };
 };
 
 // 7 · Cierre: logo, "Descargá la app", badges oficiales, redes y Cuotín. Queda quieto y al final se funde al fondo.
 export const E7Cierre: React.FC = () => {
-  const f = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const f = useCuadro();
   const e = escena(7);
   const r = (x: number) => x - e.desde;
   const fundido = 1 - tramo(f, r(e.sale), r(e.fin) - 1, curvaSalida);
-  const cuotin = spring({ frame: f - r(1128), fps, config: RESORTE });
+  const cuotin = spring({ frame: f - r(1128), fps: FPS_BASE, config: RESORTE });
   const logo = useEntrada(r(1112));
   const badges = useEntrada(r(1126));
   const alto = 100; // alto de los dos badges
   return (
     <AbsoluteFill style={{ opacity: fundido }}>
       <div style={{ position: "absolute", left: 120, width: 1100, top: 0, bottom: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 44 }}>
-        <Img src={staticFile("marca/Prestapp_logo_blanco.png")} style={{ width: 600, ...logo }} />
+        <LogoCuotas ancho={500} style={logo} />
         <Revelar lineas={["*Descargá la app*"]} entra={r(e.textos[0].entra)} sale={99999} tamano={104} alinear="center" />
         <div style={{ display: "flex", gap: 32, alignItems: "center", ...badges }}>
           <div style={{ height: alto, overflow: "hidden" }}>

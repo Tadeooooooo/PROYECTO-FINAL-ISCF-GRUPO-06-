@@ -13,13 +13,13 @@ const SFX = `${E}/prestapp_spot_SFX.wav`;
 const ffmpeg = (...args) => execFileSync("npx", ["remotion", "ffmpeg", "-v", "error", "-y", ...args], { stdio: "inherit" });
 const ffprobe = (...args) => execFileSync("npx", ["remotion", "ffprobe", "-v", "error", ...args]).toString().trim();
 
-// 2. H.264 High, yuv420p, ≥ 20 Mbps (22 Mbps de promedio), bt709, faststart, sin audio.
+// 2. H.264 High, yuv420p, 60 fps, ≥ 20 Mbps (30 Mbps de promedio), bt709, faststart, sin audio.
 //    Con CRF 16 el archivo quedaba en ~2 Mbps y aparecían escalones en los degradés del fondo;
 //    a 22 Mbps con "tune grain" el grano fino se conserva y el degradé queda liso como en el master.
 ffmpeg(
   "-i", MASTER, "-map", "0:v:0", "-pix_fmt", "yuv420p",
-  "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", "-b:v", "22M", "-maxrate", "26M", "-bufsize", "44M",
-  "-tune", "grain", "-x264-params", "aq-mode=3", "-r", "30",
+  "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", "-b:v", "30M", "-maxrate", "36M", "-bufsize", "60M",
+  "-tune", "grain", "-x264-params", "aq-mode=3", "-r", "60",
   "-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709", "-color_range", "tv",
   "-an", "-movflags", "+faststart", SIN_AUDIO,
 );

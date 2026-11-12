@@ -1,6 +1,6 @@
 import React from "react";
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { C, cruce, tiemposCelular as T, tramo } from "../marca";
+import { AbsoluteFill, interpolate, useVideoConfig } from "remotion";
+import { C, cruce, DURACION as N, K, tiemposCelular as T, tramo, useCuadro } from "../marca";
 
 // Cuánto "avanzó" la cámara hacia la derecha (en pasos de 1 por cada paneo).
 // En el cierre vuelve despacio a 0, así el último cuadro es igual al primero (loop limpio).
@@ -22,8 +22,8 @@ const CIRCULOS = [
 ];
 
 export const Fondo: React.FC = () => {
-  const f = useCurrentFrame();
-  const { durationInFrames: N, width, height } = useVideoConfig();
+  const f = useCuadro();
+  const { width, height } = useVideoConfig();
   const ciclo = (f / N) * Math.PI * 2; // todo lo que se mueve solo es periódico: el loop cierra perfecto
   const camara = avanceCamara(f);
 
@@ -68,7 +68,7 @@ export const Fondo: React.FC = () => {
       {/* Grano fílmico muy sutil (~2,5%) */}
       <svg width={width} height={height} style={{ position: "absolute", inset: 0, opacity: 0.025, mixBlendMode: "overlay" }}>
         <filter id="grano">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={f % 113} />
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves={2} seed={Math.floor(f * K) % 113} />
           <feColorMatrix type="saturate" values="0" />
         </filter>
         <rect width="100%" height="100%" filter="url(#grano)" />

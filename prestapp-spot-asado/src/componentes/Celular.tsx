@@ -1,6 +1,6 @@
 import React from "react";
-import { Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { C, cruce, RESORTE, tiemposCelular as T, tramo } from "../marca";
+import { Img, interpolate, spring, staticFile} from "remotion";
+import { C, cruce, RESORTE, tiemposCelular as T, tramo, useCuadro, FPS_BASE } from "../marca";
 
 // Mockup de smartphone limpio (CSS): marco fino oscuro, reflejo sutil y las capturas de la app adentro.
 const ALTO_CEL = 860;
@@ -31,11 +31,10 @@ const Pantallas: React.FC<{ actual: string; nueva?: string; p: number }> = ({ ac
 
 // Recuadro de escaneo verde que se dibuja sobre el QR y termina en un check (escena 3).
 const EscaneoQR: React.FC<{ f: number }> = ({ f }) => {
-  const { fps } = useVideoConfig();
   const lado = 592;
   const perimetro = 4 * lado;
   const trazo = tramo(f, 356, 392);
-  const check = spring({ frame: f - 396, fps, config: RESORTE });
+  const check = spring({ frame: f - 396, fps: FPS_BASE, config: RESORTE });
   const marcaCheck = tramo(f, 400, 414);
   if (f < 352) return null;
   return (
@@ -77,12 +76,11 @@ const EscaneoQR: React.FC<{ f: number }> = ({ f }) => {
 };
 
 export const CelularSpot: React.FC = () => {
-  const f = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const f = useCuadro();
 
   // Recorrido horizontal: entra desde la derecha, sale con la cámara hacia la izquierda,
   // vuelve a entrar desde la derecha (escena 5) y vuelve a salir (cierre).
-  const entra1 = spring({ frame: f - T.entra1, fps, config: RESORTE });
+  const entra1 = spring({ frame: f - T.entra1, fps: FPS_BASE, config: RESORTE });
   const sale1 = tramo(f, T.saleIzquierda1, T.saleIzquierda1 + 48, cruce);
   const entra2 = tramo(f, T.entra2, T.entra2 + 48, cruce);
   const sale2 = tramo(f, T.saleIzquierda2, T.saleIzquierda2 + 36, cruce);
@@ -112,7 +110,7 @@ export const CelularSpot: React.FC = () => {
     pantallas = <Pantallas actual={p >= 1 ? "qr" : "inicio"} nueva={p >= 1 ? undefined : "qr"} p={p >= 1 ? 0 : p} />;
   } else {
     const p = tramo(f, T.cambioBiometria, T.cambioBiometria + 18, cruce);
-    pantallas = <Pantallas actual={p >= 1 ? "biometria" : "servicios"} nueva={p >= 1 ? undefined : "biometria"} p={p >= 1 ? 0 : p} />;
+    pantallas = <Pantallas actual={p >= 1 ? "biometria" : "rendimientos"} nueva={p >= 1 ? undefined : "biometria"} p={p >= 1 ? 0 : p} />;
   }
 
   return (

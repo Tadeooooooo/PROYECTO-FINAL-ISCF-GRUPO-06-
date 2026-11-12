@@ -775,16 +775,20 @@ export const PantallaInicio: React.FC<{
   readonly fecha: string;
   /** Tapa con asteriscos los montos de los movimientos. */
   readonly montosOcultos?: boolean;
-}> = ({ saludo, tna, fecha, montosOcultos }) => (
+  /** Desplazamiento vertical (para mostrar la lista de movimientos) y cantidad de movimientos. */
+  readonly desplazamiento?: number;
+  readonly cantidad?: number;
+}> = ({ saludo, tna, fecha, montosOcultos, desplazamiento = 0, cantidad = 6 }) => (
   <PantallaApp
     montosOcultos={montosOcultos}
+    desplazamiento={desplazamiento}
     saldo={0}
     saludo={saludo}
     tnaTexto={tna}
     concepto="Rendimiento Saldo"
     tituloMovimientos="Últimos movimientos"
     verMas="Ver más"
-    movimientos={[0, 1, 2, 3, 4, 5].map((i) => ({
+    movimientos={Array.from({ length: cantidad }, (_, i) => i).map((i) => ({
       fecha: fechaMenosDias(fecha, i),
       monto: 59.75,
     }))}

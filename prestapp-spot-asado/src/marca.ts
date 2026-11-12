@@ -1,5 +1,5 @@
 import { loadFont } from "@remotion/fonts";
-import { Easing, interpolate, staticFile } from "remotion";
+import { Easing, interpolate, staticFile, useCurrentFrame } from "remotion";
 import guion from "./guion.json";
 
 // Paleta del Brand Kit de Prestapp (no usar otros colores).
@@ -23,7 +23,13 @@ for (const peso of ["600", "800"]) {
 export const ANCHO = 1920;
 export const ALTO = 1080;
 export const SEGURA = 96; // nada importante a menos de 96 px de los bordes
-export const DURACION = guion.duracion;
+export const DURACION = guion.duracion; // en cuadros base (30 por segundo)
+
+// El video sale a 60 fps, pero todos los tiempos del guion están en "cuadros base" de 30 por segundo.
+// useCuadro() devuelve el cuadro base con decimales (en 60 fps avanza de a medio cuadro): mismo ritmo, el doble de fluidez.
+export const FPS_BASE = guion.fps;
+export const K = guion.fpsSalida / guion.fps;
+export const useCuadro = () => useCurrentFrame() / K;
 
 // Curvas: nada lineal.
 export const suave = Easing.bezier(0.22, 1, 0.36, 1); // entradas

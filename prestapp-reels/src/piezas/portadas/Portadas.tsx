@@ -69,6 +69,9 @@ export const PortadaCelular: React.FC<{ readonly video: string }> = ({ video }) 
 const CAPTURAS: Record<string, () => React.ReactNode> = {
   inicio: () => <PantallaInicio saludo="¡Hola!" tna="**,**%" fecha="2026-09-30" montosOcultos />,
   qr: () => <PantallaEscaneo f={60} />,
+  rendimientos: () => (
+    <PantallaInicio saludo="¡Hola!" tna="**,**%" fecha="2026-09-30" montosOcultos desplazamiento={470} cantidad={14} />
+  ),
   servicios: () => <PantallaListaServicios datos={datosServicios} resaltar={0} />,
   biometria: () => <PantallaMiCuenta desplazamiento={800} encendido={1} />,
 };

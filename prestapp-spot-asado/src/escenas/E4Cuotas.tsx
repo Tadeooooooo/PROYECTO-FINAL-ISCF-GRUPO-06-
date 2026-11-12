@@ -1,8 +1,8 @@
 import React from "react";
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { IconoDNI, IconoTienda } from "../componentes/Iconos";
+import { AbsoluteFill, interpolate, spring} from "remotion";
+import { IconoTienda } from "../componentes/Iconos";
 import { Chip, Revelar } from "../componentes/Texto";
-import { C, escena, FUENTE, RESORTE, sale as curvaSalida, tramo } from "../marca";
+import { C, escena, FUENTE, RESORTE, sale as curvaSalida, tramo, useCuadro, FPS_BASE } from "../marca";
 
 // Título 3D de marca: verde, volumen en Verde sombra y contorno blanco fino.
 const CAPAS = 14;
@@ -34,14 +34,13 @@ const Titulo3D: React.FC<{ texto: string; tamano: number }> = ({ texto, tamano }
 
 // 4 · Cuotas: escena 100% tipográfica, pico visual del spot.
 export const E4Cuotas: React.FC = () => {
-  const f = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const f = useCuadro();
   const e = escena(4);
   const entra = e.textos[0].entra - e.desde;
   const subtitulo = e.textos[1].entra - e.desde;
   const sale = e.sale - e.desde;
   // Empuje de cámara: escala 1.15 → 1 con spring; llega desde la derecha siguiendo el paneo.
-  const empuje = spring({ frame: f - entra, fps, config: RESORTE });
+  const empuje = spring({ frame: f - entra, fps: FPS_BASE, config: RESORTE });
   const s = tramo(f, sale, sale + 12, curvaSalida);
   return (
     <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
@@ -57,16 +56,9 @@ export const E4Cuotas: React.FC = () => {
       >
         <Titulo3D texto="CUOTAS" tamano={268} />
       </div>
-      <div style={{ display: "flex", gap: "0.26em", fontSize: 60, marginTop: 34, translate: `${-260 * s}px 0px` }}>
-        {/* El subtítulo va en dos partes para alinear cada ícono con su frase */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 40 }}>
-          <Revelar lineas={["con tu DNI,"]} entra={subtitulo} sale={sale} tamano={60} peso={600} palabrasBloque={6} />
-          <Chip icono={<IconoDNI tamano={84} />} entra={entra + 26} sale={sale} />
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 40 }}>
-          <Revelar lineas={["en comercios adheridos."]} entra={subtitulo} sale={sale} tamano={60} peso={600} palabrasBloque={6} desfase={3} />
-          <Chip icono={<IconoTienda tamano={84} />} entra={entra + 30} sale={sale} />
-        </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 40, marginTop: 34, translate: `${-260 * s}px 0px` }}>
+        <Revelar lineas={["en comercios adheridos."]} entra={subtitulo} sale={sale} tamano={64} peso={600} />
+        <Chip icono={<IconoTienda tamano={84} />} entra={entra + 26} sale={sale} />
       </div>
     </AbsoluteFill>
   );

@@ -1,7 +1,8 @@
 {
   "fps": 30,
+  "fpsSalida": 60,
   "duracion": 1344,
-  "notas": "Tiempos en cuadros absolutos (30 = 1 s). Por texto: entra = empieza a aparecer; asentado = quedo quieto. Por escena: sale = empieza a irse; fin = ya no se ve.",
+  "notas": "Tiempos en cuadros base de 30 por segundo (30 = 1 s); el video sale a fpsSalida (60), cada cuadro base son 2 cuadros reales. Por texto: entra = empieza a aparecer; asentado = quedo quieto. Por escena: sale = empieza a irse; fin = ya no se ve.",
   "escenas": [
     {
       "id": 1,
@@ -82,45 +83,44 @@
           "asentado": 554
         },
         {
-          "texto": "con tu DNI, en comercios adheridos.",
-          "palabras": 6,
+          "texto": "en comercios adheridos.",
+          "palabras": 3,
           "entra": 552,
           "asentado": 570
         }
       ],
-      "palabras": 7,
+      "palabras": 4,
       "entra": 540,
       "asentado": 570,
       "sale": 744,
       "fin": 756,
-      "locucion": "Y en los comercios adheridos, comprá en cuotas con tu DNI."
+      "locucion": "Y en los comercios adheridos, comprá en cuotas."
     },
     {
       "id": 5,
-      "nombre": "Servicios",
+      "nombre": "Rendimientos",
       "desde": 744,
       "hasta": 960,
       "textos": [
         {
-          "texto": "+5.000 empresas",
-          "palabras": 2,
+          "texto": "Tu saldo rinde",
+          "palabras": 3,
           "entra": 774,
-          "asentado": 788
+          "asentado": 786
         },
         {
-          "texto": "para pagar tus servicios.",
-          "palabras": 4,
+          "texto": "todos los días.",
+          "palabras": 3,
           "entra": 778,
-          "asentado": 792
+          "asentado": 790
         }
       ],
       "palabras": 6,
       "entra": 774,
-      "asentado": 818,
+      "asentado": 790,
       "sale": 934,
       "fin": 946,
-      "locucion": "Pagá tus servicios en más de cinco mil empresas, desde el celular.",
-      "notaAsentado": "el contador llega a 5.000 en el cuadro 818"
+      "locucion": "Y tu saldo rinde todos los días, sin que hagas nada."
     },
     {
       "id": 6,
