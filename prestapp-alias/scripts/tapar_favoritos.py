@@ -6,7 +6,9 @@ tapadas en public/capturas/fav-*.png.
 - Listas (Destinatarios y Transferir): franja gris redondeada sobre cada nombre (queda la descripción gris).
 - Ficha del destinatario: el nombre se reemplaza por "Juan Pérez" (Montserrat Bold, mismo tamaño y color),
   y el CVU/CBU y el CUIL/CUIT se tapan con franjas grises.
-- Transferir: en la fila del favorito el nombre pasa a "Juan Pérez" y " - Mercado Lib..." se corre para quedar pegado.
+- Transferir: en la fila del favorito el nombre pasa a "Juan Pérez - Prestapp".
+- Sin otras marcas: como somos una billetera no mostramos otras empresas. "Mercado Libre" se reemplaza por
+  "Prestapp" (listas: " - Prestapp"; ficha: "Entidad: PRESTAPP"); " - Sin Descripción" queda igual.
 
 Uso: python scripts/tapar_favoritos.py <carpeta con IMG_0637..0642.jpg>
 """
@@ -20,6 +22,7 @@ ORIGEN = Path(sys.argv[1])
 RAIZ = Path(__file__).resolve().parent.parent
 DESTINO = RAIZ / "public" / "capturas"
 FUENTE = RAIZ / "node_modules" / "@fontsource" / "montserrat" / "files" / "montserrat-latin-700-normal.woff"
+FUENTE_REGULAR = RAIZ / "node_modules" / "@fontsource" / "montserrat" / "files" / "montserrat-latin-400-normal.woff"
 GRIS_CLARO = (214, 217, 226)  # mismas franjas que en el video del alias
 NOMBRE_ORIGINAL = "Tadeo Ezequiel Perelstein"
 NOMBRE_NUEVO = "Juan Pérez"
@@ -119,12 +122,47 @@ def partes_fila(a, ya, yb, x0=205, x1=1010, umbral=200):
     nombre = (x0 + segs[0][0], ya + ys.min(), x0 + segs[guion - 1][1], ya + ys.max())
     ys2 = np.where(banda[:, segs[guion][0] :].any(axis=1))[0]
     desc = (x0 + segs[guion][0], ya + ys2.min(), x0 + segs[-1][1], ya + ys2.max())
-    return nombre, desc
+    # Primera letra después del guion ("M" de Mercado o "S" de Sin Descripción): caja de su tinta.
+    letra = segs[guion + 1]
+    yl = filas(letra)
+    primera = (x0 + letra[0], ya + yl.min(), x0 + letra[1], ya + yl.max())
+    return nombre, desc, primera
+
+
+def tamano_por_altura(fuente, alto_mayuscula):
+    """Tamaño de letra cuya "M" mayúscula mide lo mismo que en la captura."""
+    tam = 10
+    while ImageFont.truetype(str(fuente), tam + 1).getbbox("M", anchor="ls")[1] * -1 <= alto_mayuscula:
+        tam += 1
+    return tam
+
+
+def escribir(im, texto, x_tinta, base, fuente, tam, color):
+    """Escribe 'texto' con la tinta empezando en x_tinta y apoyado en la línea de base 'base'."""
+    f = ImageFont.truetype(str(fuente), tam)
+    dx = f.getbbox(texto, anchor="ls")[0]
+    ImageDraw.Draw(im).text((x_tinta - dx, base), texto, font=f, fill=color, anchor="ls")
+    return x_tinta - dx + f.getlength(texto)
+
+
+def reemplazar_descripcion(im, a, ya, yb, x_guion=None):
+    """" - Mercado Libre ..." → " - Prestapp" (misma letra gris regular). " - Sin Descripción" no se toca."""
+    _, desc, primera = partes_fila(a, ya, yb)
+    ancho_letra = primera[2] - primera[0]
+    if ancho_letra < 26:  # "S" de "Sin Descripción" (la "M" de "Mercado" mide ~34 px)
+        return "sin descripción"
+    fondo = tuple(int(v) for v in a[ya - 6, desc[0]])
+    color = color_tinta(a, desc, 200)
+    tam = tamano_por_altura(FUENTE_REGULAR, primera[3] - primera[1] + 1)
+    ImageDraw.Draw(im).rectangle((desc[0] - 3, ya - 4, desc[2] + 6, yb + 6), fill=fondo)
+    escribir(im, "- Prestapp", desc[0] if x_guion is None else x_guion, primera[3] + 1, FUENTE_REGULAR, tam, color)
+    return f"reemplazada (tamaño {tam}, color {color})"
 
 
 def tapar_lista(im, a, y0, y1):
     for ya, yb in filas_de_nombres(a, y0, y1):
-        nombre, _ = partes_fila(a, ya - 2, yb + 3)
+        nombre, _, _ = partes_fila(a, ya - 2, yb + 3)
+        print("   fila", ya, reemplazar_descripcion(im, a, ya - 2, yb + 3))
         franja(im, (nombre[0] - 16, nombre[1] - 11, nombre[2] + 7, nombre[3] + 11))
 
 
@@ -148,8 +186,16 @@ for archivo, salida in (("IMG_0641.jpg", "fav-ficha.png"), ("IMG_0640.jpg", "fav
     nombre = tinta(a, (90, 335, 1100, 400) if archivo == "IMG_0641.jpg" else (90, 330, 1100, 395), 200)
     color = color_tinta(a, nombre, 200)
     fin, tam = reemplazar_nombre(im, a, nombre, color, (255, 255, 255))
+    dy = 0 if archivo == "IMG_0641.jpg" else -5
+    # Entidad: "MERCADO LIBRE SRL" → "PRESTAPP" (misma letra gris regular, mismo tamaño y posición).
+    entidad = tinta(a, (90, 505 + dy, 1100, 560 + dy), 200)
+    color_e = color_tinta(a, entidad, 200)
+    fondo_e = tuple(int(v) for v in a[entidad[1] - 8, entidad[0] + 4])
+    tam_e = tamano_por_altura(FUENTE_REGULAR, entidad[3] - entidad[1] + 1)
+    ImageDraw.Draw(im).rectangle((entidad[0] - 6, entidad[1] - 6, entidad[2] + 6, entidad[3] + 6), fill=fondo_e)
+    escribir(im, "PRESTAPP", entidad[0], entidad[3] + 1, FUENTE_REGULAR, tam_e, color_e)
+    print(salida, "entidad", entidad, "color", color_e, "tamaño", tam_e)
     for y0, y1 in ((662, 722), (828, 885)):
-        dy = 0 if archivo == "IMG_0641.jpg" else -5
         caja = tinta(a, (90, y0 + dy, 1100, y1 + dy), 200)
         franja(im, (caja[0] - 8, caja[1] - 9, caja[2] + 10, caja[3] + 9))
     im.save(DESTINO / salida, optimize=True)
@@ -158,16 +204,18 @@ for archivo, salida in (("IMG_0641.jpg", "fav-ficha.png"), ("IMG_0640.jpg", "fav
 # Transferir: fila del favorito y lista "Últimos".
 im, a = abrir("IMG_0642.jpg")
 (ya, yb), = filas_de_nombres(a, 900, 990)
-nombre, desc = partes_fila(a, ya - 2, yb + 3)
+nombre, desc, primera = partes_fila(a, ya - 2, yb + 3)
 fondo = tuple(int(v) for v in a[nombre[1] - 12, nombre[0]])
-recorte = im.crop((nombre[2] + 1, 905, desc[2] + 2, 985))  # " - Mercado Lib..." con el espacio de antes
 color = color_tinta(a, nombre, 140)
+color_desc = color_tinta(a, desc, 200)
+tam_desc = tamano_por_altura(FUENTE_REGULAR, primera[3] - primera[1] + 1)
+separacion = desc[0] - nombre[2]  # espacio original entre el nombre y el guion
 fin, tam = reemplazar_nombre(im, a, nombre, color, fondo)
 ImageDraw.Draw(im).rectangle((nombre[0] - 6, 905, desc[2] + 4, 985), fill=fondo)
 fuente = ImageFont.truetype(str(FUENTE), tam)
 b = fuente.getbbox(NOMBRE_ORIGINAL)
 ImageDraw.Draw(im).text((nombre[0] - b[0], nombre[1] - b[1]), NOMBRE_NUEVO, font=fuente, fill=color)
-im.paste(recorte, (fin + 1, 905))
+escribir(im, "- Prestapp", fin + separacion, primera[3] + 1, FUENTE_REGULAR, tam_desc, color_desc)
 tapar_lista(im, a, 1260, 2120)
 im.save(DESTINO / "fav-transferir.png", optimize=True)
 print("fav-transferir.png", "nombre", nombre, "descripcion", desc, "fondo", fondo, "tamaño", tam)

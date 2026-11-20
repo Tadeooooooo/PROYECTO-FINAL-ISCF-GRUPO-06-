@@ -42,7 +42,7 @@ export const videoFavoritos: Video = {
         {
           captura: "fav-cvu.png",
           desde: 415,
-          tipeos: [{ x: 140, y: 359, texto: "JUAN.PEREZ.MP", desde: 470, porLetra: 4 }],
+          tipeos: [{ x: 140, y: 359, texto: "JUAN.PEREZ.PRESTAPP", desde: 470, porLetra: 3 }],
           botones: [{ caja: [92, 1316, 1113, 1427], texto: "CONTINUAR", desde: 528 }],
           toques: [{ x: 602, y: 1371, en: 568 }],
         },
