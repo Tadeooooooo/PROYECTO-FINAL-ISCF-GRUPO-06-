@@ -4,7 +4,7 @@ import { AbsoluteFill, interpolate, Sequence, spring, staticFile, useCurrentFram
 import { Celular } from "./componentes/Celular";
 import { Fondo } from "./componentes/Fondo";
 import { Chip, LogoPastilla, Titulo } from "./componentes/Marca";
-import { Tarjeta, TOP_TARJETA } from "./componentes/Tarjeta";
+import { Encabezado } from "./componentes/Encabezado";
 import { CIERRE, INTRO, PASOS, WHOOSH } from "./guion";
 import { C, cruce, EJE_X, INTER, POPPINS, RESORTE, sale, tramo } from "./marca";
 
@@ -13,7 +13,7 @@ const Logo: React.FC = () => {
   const f = useCurrentFrame();
   const aparece = spring({ frame: f - 4, fps: 30, config: RESORTE });
   const sube = tramo(f, INTRO.hasta - 14, INTRO.hasta + 10, cruce);
-  const ancho = interpolate(sube, [0, 1], [440, 250]);
+  const ancho = interpolate(sube, [0, 1], [440, 220]);
   const arriba = interpolate(sube, [0, 1], [470, 262]);
   return (
     <div style={{ position: "absolute", left: 0, width: EJE_X * 2, top: arriba, display: "flex", justifyContent: "center", zIndex: 6 }}>
@@ -29,7 +29,7 @@ const Intro: React.FC = () => {
   return (
     <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 790, opacity: 1 - s, translate: `0px ${-30 * s}px` }}>
       <Chip texto="PASO A PASO" style={{ opacity: chip, translate: `0px ${(1 - chip) * 20}px` }} />
-      <Titulo lineas={["¿Cómo cambio", "mi *alias*?"]} entra={20} tamano={104} style={{ marginTop: 44 }} />
+      <Titulo lineas={["¿Cómo cambio", "mi *alias*?"]} entra={20} tamano={104} color={C.blanco} style={{ marginTop: 34 }} />
     </AbsoluteFill>
   );
 };
@@ -40,10 +40,10 @@ const CelularEnEscena: React.FC = () => {
   const entra = spring({ frame: f - (INTRO.hasta - 6), fps: 30, config: RESORTE });
   const s = tramo(f, CIERRE.desde - 6, CIERRE.desde + 14, cruce);
   if (f < INTRO.hasta - 6 || f > CIERRE.desde + 16) return null;
-  // El celular solo se ve de la mitad de la tarjeta para abajo: al hacer zoom pasa por detrás de la tarjeta
-  // y nunca se asoma arriba, junto al logo.
+  // El celular se desvanece por arriba (debajo del título): al hacer zoom nunca tapa el título ni el logo.
+  const mascara = "linear-gradient(to bottom, transparent 0px, transparent 630px, #000 710px)";
   return (
-    <AbsoluteFill style={{ clipPath: `inset(${TOP_TARJETA + 103}px 0px 0px 0px)` }}>
+    <AbsoluteFill style={{ maskImage: mascara, WebkitMaskImage: mascara }}>
       <AbsoluteFill style={{ translate: `0px ${(1 - entra) * 1300 + s * 1400}px` }}>
         <Celular />
       </AbsoluteFill>
@@ -71,13 +71,13 @@ const Cierre: React.FC = () => {
   return (
     <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 470 }}>
       <Check en={r(552)} />
-      <Titulo lineas={["¡Listo! Ya tenés", "tu *alias nuevo*"]} entra={r(560)} tamano={88} style={{ marginTop: 44 }} />
+      <Titulo lineas={["¡Listo! Ya tenés", "tu *alias nuevo*"]} entra={r(560)} tamano={88} color={C.blanco} style={{ marginTop: 44 }} />
       <div style={{ marginTop: 40, fontFamily: INTER, fontWeight: 500, fontSize: 38, lineHeight: 1.3, color: C.apoyo, textAlign: "center", opacity: apoyo, translate: `0px ${(1 - apoyo) * 20}px` }}>
         Descargá la app desde
         <br />
         el link de nuestro perfil
       </div>
-      <div style={{ marginTop: 34, fontFamily: POPPINS, fontWeight: 600, fontSize: 42, color: C.azul, opacity: usuario, translate: `0px ${(1 - usuario) * 20}px` }}>@prestapp.ar</div>
+      <div style={{ marginTop: 34, fontFamily: POPPINS, fontWeight: 600, fontSize: 42, color: C.verde, opacity: usuario, translate: `0px ${(1 - usuario) * 20}px` }}>@prestapp.ar</div>
     </AbsoluteFill>
   );
 };
@@ -90,12 +90,13 @@ export const Reel: React.FC = () => (
       <Intro />
     </Sequence>
     <CelularEnEscena />
-    <Tarjeta />
+    <Encabezado />
     <Sequence name="Cierre" from={CIERRE.desde} durationInFrames={CIERRE.hasta - CIERRE.desde}>
       <Cierre />
     </Sequence>
     <Logo />
-    {/* Sonidos: whoosh leve en cada transición y tap en cada toque */}
+    {/* Música de fondo tranqui (original, sintetizada) y sonidos: whoosh en cada transición y tap en cada toque */}
+    <Audio src={staticFile("audio/musica.wav")} volume={0.55} />
     {WHOOSH.map((en) => (
       <Sequence key={`w${en}`} name="Whoosh" from={en} durationInFrames={20} layout="none">
         <Audio src={staticFile("audio/sfx/whoosh.wav")} volume={0.7} />

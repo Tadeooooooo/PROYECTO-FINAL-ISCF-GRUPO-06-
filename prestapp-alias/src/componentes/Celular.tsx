@@ -12,7 +12,7 @@ const ALTO_CAP = 2464;
 const ANCHO_PANT = (ALTO_PANT * ANCHO_CAP) / ALTO_CAP;
 const ANCHO_CEL = ANCHO_PANT + BISEL * 2;
 const ESC = ANCHO_PANT / ANCHO_CAP; // de píxeles de captura a píxeles del video
-export const BASE = { izquierda: EJE_X - ANCHO_CEL / 2, arriba: 610 };
+export const BASE = { izquierda: EJE_X - ANCHO_CEL / 2, arriba: 720 };
 
 // ----- Cámara: zoom suave hacia la zona del toque -----
 type Camara = { z: number; dx: number; dy: number };
@@ -179,8 +179,8 @@ export const Celular: React.FC = () => {
         width: ANCHO_CEL,
         height: ALTO_CEL,
         borderRadius: 66,
-        backgroundColor: "#12142B",
-        boxShadow: "0 0 0 2px #2A2D4F, 0 40px 90px rgba(18,24,69,0.30), 0 12px 30px rgba(18,24,69,0.18)",
+        backgroundColor: "#0B0E2A",
+        boxShadow: "0 0 0 2px #3A3F72, 0 50px 110px rgba(4,6,30,0.55)",
         transformOrigin: "0 0",
         transform: `translate(${cam.dx}px, ${cam.dy}px) scale(${cam.z})`,
       }}

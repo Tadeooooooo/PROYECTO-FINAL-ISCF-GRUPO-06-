@@ -7,8 +7,8 @@ export const CIERRE = { desde: 540, hasta: 645 };
 
 export type Paso = {
   numero: number;
-  /** Instrucción: lo que va entre *asteriscos* sale en azul. */
-  instruccion: string;
+  /** Instrucción, una línea por elemento: lo que va entre *asteriscos* sale en verde. */
+  instruccion: string[];
   captura: string;
   desde: number; // entra la pantalla nueva (deslizándose dentro del celular)
   hasta: number;
@@ -19,7 +19,7 @@ export type Paso = {
 export const PASOS: Paso[] = [
   {
     numero: 1,
-    instruccion: "Tocá las *tres rayitas* de abajo a la derecha",
+    instruccion: ["Tocá el *menú*", "de abajo a la derecha"],
     captura: "paso1-inicio.png",
     desde: 75,
     hasta: 180,
@@ -28,16 +28,16 @@ export const PASOS: Paso[] = [
   },
   {
     numero: 2,
-    instruccion: "Entrá a *Mi cuenta*",
+    instruccion: ["Entrá a", "*Mi cuenta*"],
     captura: "paso2-menu.png",
     desde: 180,
     hasta: 270,
     toque: { x: 600, y: 305, en: 232 },
-    zoom: [{ desde: 198, z: 1.5, foco: [600, 305], destino: [520, 900] }],
+    zoom: [{ desde: 198, z: 1.5, foco: [600, 305], destino: [520, 960] }],
   },
   {
     numero: 3,
-    instruccion: "Bajá hasta Alias y tocá el *lápiz azul*",
+    instruccion: ["Bajá hasta Alias y", "tocá el *lápiz azul*"],
     captura: "paso3-mi-cuenta.png",
     desde: 270,
     hasta: 405,
@@ -46,7 +46,7 @@ export const PASOS: Paso[] = [
   },
   {
     numero: 4,
-    instruccion: "Escribí tu alias nuevo y tocá *Guardar*",
+    instruccion: ["Escribí tu alias nuevo", "y tocá *Guardar*"],
     captura: "paso4-alias.png",
     desde: 405,
     hasta: 540,

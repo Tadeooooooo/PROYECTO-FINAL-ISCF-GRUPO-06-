@@ -1,14 +1,15 @@
 import { loadFont } from "@remotion/fonts";
 import { Easing, interpolate, staticFile } from "remotion";
 
-// Estética de los últimos posteos: fondo claro, azul de acento, verde para una palabra por título.
+// Estética de los tutoriales anteriores con los colores actuales: azul noche, texto blanco y verde para una palabra por título.
 export const C = {
   azul: "#1724A7",
   verde: "#4EC148",
-  niebla: "#E9ECF8",
+  fondo: "#162053", // azul noche de los posteos actuales
+  luz: "#24348F", // foco de luz suave del fondo
   blanco: "#FFFFFF",
   tinta: "#121845",
-  apoyo: "#4A5078", // texto de apoyo sobre claro
+  apoyo: "rgba(255,255,255,0.82)", // texto de apoyo sobre oscuro
 };
 
 // Poppins Bold (títulos y números), Poppins SemiBold (chips y botones), Inter (apoyo). Archivos locales (OFL).

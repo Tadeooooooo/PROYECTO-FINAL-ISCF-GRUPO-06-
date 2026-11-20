@@ -15,7 +15,7 @@ export const LogoPastilla: React.FC<{ readonly ancho: number; readonly style?: R
         backgroundColor: C.blanco,
         padding: `${alto * 0.3}px ${alto * 0.6}px`,
         borderRadius: 999,
-        boxShadow: "0 14px 36px rgba(18,24,69,0.14), 0 3px 8px rgba(18,24,69,0.08)",
+        boxShadow: "0 14px 40px rgba(4,6,30,0.35)",
         ...style,
       }}
     >
@@ -29,19 +29,17 @@ export const LogoPastilla: React.FC<{ readonly ancho: number; readonly style?: R
   );
 };
 
-// Chip de categoría en mayúsculas con letras espaciadas.
+// Chip de categoría: mayúsculas en verde con letras espaciadas (como "FUNCIONES DE LA APP" en los posteos).
 export const Chip: React.FC<{ readonly texto: string; readonly style?: React.CSSProperties }> = ({ texto, style }) => (
   <div
     style={{
       display: "inline-block",
       fontFamily: POPPINS,
       fontWeight: 600,
-      fontSize: 30,
-      letterSpacing: "0.22em",
-      color: C.blanco,
-      backgroundColor: C.azul,
-      padding: "14px 30px 13px 36px",
-      borderRadius: 999,
+      fontSize: 32,
+      letterSpacing: "0.28em",
+      marginLeft: "0.28em",
+      color: C.verde,
       ...style,
     }}
   >
