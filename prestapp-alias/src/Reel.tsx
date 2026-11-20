@@ -5,12 +5,13 @@ import { Celular } from "./componentes/Celular";
 import { Fondo } from "./componentes/Fondo";
 import { Chip, LogoPastilla, Titulo } from "./componentes/Marca";
 import { Encabezado } from "./componentes/Encabezado";
-import { CIERRE, INTRO, PASOS, WHOOSH } from "./guion";
+import type { Video } from "./tipos";
 import { C, cruce, EJE_X, INTER, POPPINS, RESORTE, sale, tramo } from "./marca";
 
 // Logo en pastilla: grande en la intro, chico arriba al centro durante los pasos y el cierre.
-const Logo: React.FC = () => {
+const Logo: React.FC<{ video: Video }> = ({ video }) => {
   const f = useCurrentFrame();
+  const INTRO = video.intro;
   const aparece = spring({ frame: f - 4, fps: 30, config: RESORTE });
   const sube = tramo(f, INTRO.hasta - 14, INTRO.hasta + 10, cruce);
   const ancho = interpolate(sube, [0, 1], [440, 220]);
@@ -22,21 +23,25 @@ const Logo: React.FC = () => {
   );
 };
 
-const Intro: React.FC = () => {
+const Intro: React.FC<{ video: Video }> = ({ video }) => {
   const f = useCurrentFrame();
+  const INTRO = video.intro;
+  const extra = (INTRO.titulo.length - 2) * 56; // con 3 líneas, el bloque sube un poco para quedar centrado
   const chip = tramo(f, 14, 28);
   const s = tramo(f, INTRO.hasta - 12, INTRO.hasta, sale);
   return (
-    <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 790, opacity: 1 - s, translate: `0px ${-30 * s}px` }}>
+    <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 790 - extra, opacity: 1 - s, translate: `0px ${-30 * s}px` }}>
       <Chip texto="PASO A PASO" style={{ opacity: chip, translate: `0px ${(1 - chip) * 20}px` }} />
-      <Titulo lineas={["¿Cómo cambio", "mi *alias*?"]} entra={20} tamano={104} color={C.blanco} style={{ marginTop: 34 }} />
+      <Titulo lineas={INTRO.titulo} entra={20} tamano={INTRO.tamano} color={C.blanco} style={{ marginTop: 34 }} />
     </AbsoluteFill>
   );
 };
 
 // El celular sube desde abajo al terminar la intro y baja al empezar el cierre.
-const CelularEnEscena: React.FC = () => {
+const CelularEnEscena: React.FC<{ video: Video }> = ({ video }) => {
   const f = useCurrentFrame();
+  const INTRO = video.intro;
+  const CIERRE = video.cierre;
   const entra = spring({ frame: f - (INTRO.hasta - 6), fps: 30, config: RESORTE });
   const s = tramo(f, CIERRE.desde - 6, CIERRE.desde + 14, cruce);
   if (f < INTRO.hasta - 6 || f > CIERRE.desde + 16) return null;
@@ -45,7 +50,7 @@ const CelularEnEscena: React.FC = () => {
   return (
     <AbsoluteFill style={{ maskImage: mascara, WebkitMaskImage: mascara }}>
       <AbsoluteFill style={{ translate: `0px ${(1 - entra) * 1300 + s * 1400}px` }}>
-        <Celular />
+        <Celular video={video} />
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -63,15 +68,15 @@ const Check: React.FC<{ en: number }> = ({ en }) => {
   );
 };
 
-const Cierre: React.FC = () => {
+// Tiempos del cierre (relativos a su inicio): check, título, texto de apoyo y usuario.
+const Cierre: React.FC<{ video: Video }> = ({ video }) => {
   const f = useCurrentFrame();
-  const r = (x: number) => x - CIERRE.desde;
-  const apoyo = tramo(f, r(578), r(592));
-  const usuario = tramo(f, r(588), r(602));
+  const apoyo = tramo(f, 38, 52);
+  const usuario = tramo(f, 48, 62);
   return (
-    <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 470 }}>
-      <Check en={r(552)} />
-      <Titulo lineas={["¡Listo! Ya tenés", "tu *alias nuevo*"]} entra={r(560)} tamano={88} color={C.blanco} style={{ marginTop: 44 }} />
+    <AbsoluteFill style={{ width: EJE_X * 2, alignItems: "center", paddingTop: 470 - (video.cierre.titulo.length - 2) * 40 }}>
+      <Check en={12} />
+      <Titulo lineas={video.cierre.titulo} entra={20} tamano={video.cierre.tamano} color={C.blanco} style={{ marginTop: 44 }} />
       <div style={{ marginTop: 40, fontFamily: INTER, fontWeight: 500, fontSize: 38, lineHeight: 1.3, color: C.apoyo, textAlign: "center", opacity: apoyo, translate: `0px ${(1 - apoyo) * 20}px` }}>
         Descargá la app desde
         <br />
@@ -82,28 +87,28 @@ const Cierre: React.FC = () => {
   );
 };
 
-// Reel "Cómo cambiar tu alias" · 1080x1920 · 30 fps · 645 cuadros (21,5 s).
-export const Reel: React.FC = () => (
+// Reel "paso a paso" de Prestapp: intro, pasos con el celular y cierre. Los datos de cada video están en src/videos/.
+export const Reel: React.FC<{ video: Video }> = ({ video }) => (
   <AbsoluteFill>
     <Fondo />
-    <Sequence name="Intro" from={INTRO.desde} durationInFrames={INTRO.hasta - INTRO.desde + 2}>
-      <Intro />
+    <Sequence name="Intro" from={0} durationInFrames={video.intro.hasta + 2}>
+      <Intro video={video} />
     </Sequence>
-    <CelularEnEscena />
-    <Encabezado />
-    <Sequence name="Cierre" from={CIERRE.desde} durationInFrames={CIERRE.hasta - CIERRE.desde}>
-      <Cierre />
+    <CelularEnEscena video={video} />
+    <Encabezado video={video} />
+    <Sequence name="Cierre" from={video.cierre.desde} durationInFrames={video.duracion - video.cierre.desde}>
+      <Cierre video={video} />
     </Sequence>
-    <Logo />
+    <Logo video={video} />
     {/* Música de fondo tranqui (original, sintetizada) y sonidos: whoosh en cada transición y tap en cada toque */}
-    <Audio src={staticFile("audio/musica.wav")} volume={0.55} />
-    {WHOOSH.map((en) => (
+    <Audio src={staticFile(video.musica)} volume={0.55} />
+    {video.whoosh.map((en) => (
       <Sequence key={`w${en}`} name="Whoosh" from={en} durationInFrames={20} layout="none">
         <Audio src={staticFile("audio/sfx/whoosh.wav")} volume={0.7} />
       </Sequence>
     ))}
-    {PASOS.map((p) => (
-      <Sequence key={`t${p.numero}`} name={`Tap paso ${p.numero}`} from={p.toque.en} durationInFrames={10} layout="none">
+    {video.pasos.flatMap((p) => p.pantallas.flatMap((pa) => pa.toques ?? [])).map((t) => (
+      <Sequence key={`t${t.en}`} name="Tap" from={t.en} durationInFrames={10} layout="none">
         <Audio src={staticFile("audio/sfx/tap.wav")} volume={0.8} />
       </Sequence>
     ))}

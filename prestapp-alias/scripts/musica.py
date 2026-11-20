@@ -1,7 +1,7 @@
 """
 Música de fondo original para el reel (sintetizada): tranqui, sutil y sin batería.
 84 BPM · Do mayor · colchón de acordes + arpegio suave tipo piano + bajo muy bajito.
-Uso: python scripts/musica.py public/audio/musica.wav
+Uso: python scripts/musica.py <salida.wav> [cuadros, a 30 por segundo; por defecto 645]
 """
 import sys
 import wave
@@ -11,7 +11,7 @@ import pyloudnorm as pyln
 from scipy.signal import butter, fftconvolve, sosfilt
 
 SR = 48000
-DURACION = 645 / 30  # igual que el video
+DURACION = (int(sys.argv[2]) if len(sys.argv) > 2 else 645) / 30  # igual que el video
 BPM = 84
 PULSO = 60 / BPM
 COMPAS = 4 * PULSO
@@ -65,7 +65,7 @@ def nota_bajo(f, ini, dur):
     bajo[i0:fin] += voz[: fin - i0]
 
 compases = int(np.ceil(DURACION / COMPAS))
-inicio_final = 18.0  # el acorde final suena durante el cierre
+inicio_final = DURACION - 3.5  # el acorde final suena durante el cierre
 for c in range(compases):
     ini = c * COMPAS
     if ini >= inicio_final:
