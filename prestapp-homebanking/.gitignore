@@ -1,0 +1,6 @@
+node_modules
+out
+entregables/*.mp4
+__pycache__
+public/audio/musica.wav
+entregables/**/*.mp4
