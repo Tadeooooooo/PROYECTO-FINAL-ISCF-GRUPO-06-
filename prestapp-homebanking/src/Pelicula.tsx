@@ -35,6 +35,8 @@ const conNavegador = (b?: Bloque) => !!b && (b.tipo === "pantallas" || b.tipo ==
 // ----- Voz en off: una pista por paso, que arranca junto con el título -----
 // Si la voz necesita más tiempo que el paso, la imagen se congela un momento (en un instante quieto del paso)
 // y todo lo que sigue se corre: así el texto nunca se va antes de que la voz termine.
+// Apagada: el video va sin voz (las pistas siguen en public/audio/voz por si se quiere volver a usar).
+const CON_VOZ = false;
 type Pausa = { en: number; cuadros: number };
 type Locucion = { archivo: string; en: number; dura: number }; // en = cuadro de contenido del bloque
 const DUR_VOZ = VOZ as Record<string, number>;
@@ -48,6 +50,7 @@ const vozDe = (b: Bloque): Locucion[] => {
 };
 
 const pausasDe = (b: Bloque): Pausa[] => {
+  if (!CON_VOZ) return [];
   const pasos = pasosDe(b);
   const voz = vozDe(b);
   const pausas: Pausa[] = [];
@@ -191,7 +194,7 @@ for (const b of BLOQUES) {
   const ini = INICIOS[b.id];
   const real = (f: number) => ini + aReal(PAUSAS[b.id], f);
   if (b.id !== "intro") WHOOSH.push(ini);
-  vozDe(b).forEach((v) => VOCES.push({ ...v, en: real(v.en) }));
+  if (CON_VOZ) vozDe(b).forEach((v) => VOCES.push({ ...v, en: real(v.en) }));
   if (b.tipo === "tipos") WHOOSH.push(real(790)); // tarjetas de roles
   if (b.tipo !== "pantallas") continue;
   b.pantallas.forEach((p, i) => {
@@ -220,7 +223,7 @@ export const Pelicula: React.FC<{ desde: number; hasta: number }> = ({ desde, ha
         <LogoFijo />
         <Audio
           src={staticFile("audio/musica.wav")}
-          volume={(f) => (0.42 - 0.2 * conVoz(f)) * Math.max(0, Math.min(1, (f - desde) / 15, (hasta - f) / 24))}
+          volume={(f) => (CON_VOZ ? 0.42 - 0.2 * conVoz(f) : 0.5) * Math.max(0, Math.min(1, (f - desde) / 15, (hasta - f) / 24))}
         />
         {VOCES.filter((v) => v.en >= desde && v.en < hasta).map((v) => (
           <Sequence key={v.archivo} name={`Voz ${v.archivo}`} from={v.en} durationInFrames={v.dura + 6} layout="none">

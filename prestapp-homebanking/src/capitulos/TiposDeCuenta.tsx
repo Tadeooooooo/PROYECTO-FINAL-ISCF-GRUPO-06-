@@ -6,15 +6,19 @@ import { C, cruce, FPS, INTER, POPPINS, RESORTE, sale, tramo } from "../marca";
 import type { Paso } from "../tipos";
 
 // CAP. 2 · TIPOS DE CUENTA: escena sin capturas, con un esquema que se arma (tarjetas, íconos de línea y conectores).
+// Arriba la cuenta recaudadora (la madre) y debajo las administrativas (3 de ejemplo: pueden ser las que el club necesite).
 export const DURACION_TIPOS = 1140;
 
 const T = {
-  entidad: 14,
-  conectores: 40,
-  tarjetas: [62, 74, 86],
+  recaudadora: 14,
+  etiquetaRec: 40,
+  conectores: 44,
+  tarjetas: [66, 78, 90],
   etiquetas: [112, 122, 132],
+  nota: 150,
   separadores: 240,
-  brillo: [262, 292, 322],
+  brillo: [262, 292, 322, 352],
+  chipsRec: 415,
   chips: [430, 445, 460],
   eventos: 660,
   saleEsquema: 770,
@@ -30,17 +34,21 @@ export const pasosTipos: Paso[] = [
     titulo: ["Puntos de venta", "y *usuarios*"],
     apoyo: ["Cada cuenta puede crear", "puntos de venta y usuarios", "para cobrar. Todo lo que", "cobran entra en esa cuenta,", "sin afectar a las demás."],
   },
-  { desde: 640, pausa: 755, titulo: ["Ideal para", "*eventos*"], apoyo: ["Distintos puntos de venta", "con QR de distintos montos."] },
+  { desde: 640, titulo: ["Ideal para", "*eventos*"], apoyo: ["Distintos puntos de venta", "con QR de distintos montos."] },
   { desde: 780, titulo: ["Cada usuario", "tiene *un rol*"] },
-  { desde: 1000, pausa: 1118, titulo: ["La recaudadora y", "las administrativas", "ven *todas las", "funciones*"], apoyo: ["Los usuarios, según su rol."] },
+  { desde: 1000, titulo: ["La recaudadora y", "las administrativas", "ven *todas las", "funciones*"], apoyo: ["Los usuarios, según su rol."] },
 ];
 
 // Geometría del esquema (a la derecha, en el lugar del navegador).
 const CX = 1246;
+const REC = { x: CX - 380, y: 180, ancho: 760, alto: 180 };
+const Y_CHIPS_REC = 378; // chips de la recaudadora, a los costados del tronco
+const Y_RAMA = 450; // línea horizontal que reparte a las administrativas
 const ANCHO_T = 380;
 const XS = [636, 1056, 1476];
-const ARRIBA_T = 420;
-const ALTO_T = 380;
+const ARRIBA_T = 476;
+const ALTO_T = 280;
+const Y_NOTA = 940;
 
 const Verde: React.FC<{ children: React.ReactNode }> = ({ children }) => <span style={{ color: C.verde }}>{children}</span>;
 
@@ -58,11 +66,32 @@ const Caja: React.CSSProperties = {
   boxShadow: "0 24px 60px rgba(4,6,30,0.25)",
 };
 
-const CUENTAS = [
-  { icono: "recaudadora" as const, titulo: "recaudadora", sub: ["La cuenta madre,", "donde llega", "lo recaudado"] },
-  { icono: "administrativa" as const, titulo: "administrativa", sub: ["A cargo", "de un área"] },
-  { icono: "administrativa" as const, titulo: "administrativa", sub: ["A cargo", "de un área"] },
-];
+const brilloDe = (f: number, en: number) => tramo(f, en, en + 12) * (1 - tramo(f, en + 40, en + 60));
+const bordeBrillo = (b: number): React.CSSProperties => ({
+  borderColor: `rgba(78,193,72,${0.18 + 0.8 * b})`,
+  boxShadow: `0 24px 60px rgba(4,6,30,0.25), 0 0 ${36 * b}px rgba(78,193,72,${0.45 * b})`,
+});
+
+const EtiquetaCVU: React.FC<{ v: number; style?: React.CSSProperties }> = ({ v, style }) => (
+  <div
+    style={{
+      display: "inline-block",
+      padding: "7px 14px",
+      borderRadius: 999,
+      backgroundColor: C.blanco,
+      color: C.tinta,
+      fontFamily: INTER,
+      fontWeight: 600,
+      fontSize: 28,
+      whiteSpace: "nowrap",
+      opacity: v,
+      translate: `0px ${(1 - v) * 12}px`,
+      ...style,
+    }}
+  >
+    CVU y alias propios
+  </div>
+);
 
 const ChipVerde: React.FC<{ icono: "tienda" | "usuarios"; texto: string; brillo?: number }> = ({ icono, texto, brillo = 0 }) => (
   <div
@@ -95,98 +124,102 @@ const Esquema: React.FC = () => {
   const sep = tramo(f, T.separadores, T.separadores + 24, cruce);
   const eventos = tramo(f, T.eventos, T.eventos + 14) * (1 - tramo(f, T.saleEsquema - 10, T.saleEsquema));
   const pulso = eventos * (0.65 + 0.35 * Math.sin(((f - T.eventos) / 22) * Math.PI));
+  const ramitas = tramo(f, T.chipsRec - 6, T.chipsRec + 8);
+  const nota = tramo(f, T.nota, T.nota + 18);
+  const bRec = brilloDe(f, T.brillo[0]);
   return (
     <div style={{ position: "absolute", inset: 0, opacity: 1 - fuera, translate: `0px ${-30 * fuera}px` }}>
-      {/* conectores que se dibujan */}
+      {/* conectores que se dibujan: de la recaudadora a cada administrativa */}
       <svg width={1920} height={1080} style={{ position: "absolute", left: 0, top: 0 }} fill="none" strokeLinecap="round">
         <path
-          d={`M${CX} 340V380 M${XS[0] + ANCHO_T / 2} ${ARRIBA_T}V380H${XS[2] + ANCHO_T / 2}V${ARRIBA_T} M${CX} 380V${ARRIBA_T}`}
+          d={`M${CX} ${REC.y + REC.alto}V${Y_RAMA} M${XS[0] + ANCHO_T / 2} ${ARRIBA_T}V${Y_RAMA}H${XS[2] + ANCHO_T / 2}V${ARRIBA_T} M${CX} ${Y_RAMA}V${ARRIBA_T}`}
           stroke="rgba(255,255,255,0.45)"
           strokeWidth={3}
           pathLength={1}
           strokeDasharray={1}
           strokeDashoffset={1 - con}
         />
+        {/* ramitas del tronco a los chips de la recaudadora */}
+        {ramitas > 0.01 && <path d={`M${CX - 24 * ramitas} ${Y_CHIPS_REC + 23}H${CX + 24 * ramitas}`} stroke="rgba(255,255,255,0.45)" strokeWidth={3} />}
         {/* separadores: cada cuenta ve solo lo suyo */}
-        {sep > 0.01 && [XS[1] - 20, XS[2] - 20].map((x) => (
-          <path key={x} d={`M${x} ${ARRIBA_T - 6}V${ARRIBA_T - 6 + 420 * sep}`} stroke={C.verde} strokeWidth={3} strokeDasharray="10 12" opacity={0.85} />
-        ))}
-        {/* línea de cada tarjeta a sus chips */}
+        {sep > 0.01 &&
+          [XS[1] - 20, XS[2] - 20].map((x) => <path key={x} d={`M${x} ${ARRIBA_T - 6}V${ARRIBA_T - 6 + (ALTO_T + 12) * sep}`} stroke={C.verde} strokeWidth={3} strokeDasharray="10 12" opacity={0.85} />)}
+        {/* línea de cada administrativa a sus chips */}
         {XS.map((x, i) => {
           const v = tramo(f, T.chips[i] - 6, T.chips[i] + 8);
-          return v > 0.01 ? <path key={i} d={`M${x + ANCHO_T / 2} ${ARRIBA_T + ALTO_T}v${24 * v}`} stroke="rgba(255,255,255,0.45)" strokeWidth={3} /> : null;
+          return v > 0.01 ? <path key={i} d={`M${x + ANCHO_T / 2} ${ARRIBA_T + ALTO_T}v${20 * v}`} stroke="rgba(255,255,255,0.45)" strokeWidth={3} /> : null;
         })}
       </svg>
 
-      {/* Entidad */}
-      <Pop en={T.entidad} style={{ left: CX - 250, top: 236, width: 500 }}>
-        <div style={{ ...Caja, height: 104, display: "flex", alignItems: "center", justifyContent: "center", gap: 20 }}>
-          <Icono nombre="edificio" tam={52} color={C.verde} grosor={2.8} dibujo={tramo(f, T.entidad + 4, T.entidad + 26)} />
-          <div style={{ fontFamily: POPPINS, fontWeight: 700, fontSize: 36, color: C.blanco }}>
-            Entidad <span style={{ fontFamily: INTER, fontWeight: 500, fontSize: 30, color: C.apoyo }}>(mismo CUIT)</span>
+      {/* Cuenta recaudadora (la madre) */}
+      <Pop en={T.recaudadora} style={{ left: REC.x, top: REC.y, width: REC.ancho }}>
+        <div style={{ ...Caja, ...bordeBrillo(bRec), height: REC.alto, boxSizing: "border-box", padding: "22px 28px", display: "flex", gap: 22 }}>
+          <Icono nombre="recaudadora" tam={52} color={C.verde} grosor={2.8} dibujo={tramo(f, T.recaudadora + 6, T.recaudadora + 30)} style={{ flexShrink: 0 }} />
+          <div>
+            <div style={{ fontFamily: POPPINS, fontWeight: 700, fontSize: 34, lineHeight: 1.12, color: C.blanco }}>
+              Cuenta <Verde>recaudadora</Verde>
+            </div>
+            <div style={{ marginTop: 4, fontFamily: INTER, fontWeight: 500, fontSize: 28, lineHeight: 1.3, color: C.apoyo }}>La cuenta madre, donde llega lo recaudado</div>
+            <EtiquetaCVU v={tramo(f, T.etiquetaRec, T.etiquetaRec + 14)} style={{ marginTop: 12 }} />
           </div>
         </div>
       </Pop>
 
-      {/* Cuentas */}
-      {CUENTAS.map((c, i) => {
-        const etiqueta = tramo(f, T.etiquetas[i], T.etiquetas[i] + 14);
-        const brillo = tramo(f, T.brillo[i], T.brillo[i] + 12) * (1 - tramo(f, T.brillo[i] + 40, T.brillo[i] + 60));
+      {/* Puntos de venta y usuarios de la recaudadora, a los costados del tronco */}
+      <Pop en={T.chipsRec} style={{ left: 636, top: Y_CHIPS_REC, width: CX - 24 - 636, display: "flex", justifyContent: "flex-end" }}>
+        <ChipVerde icono="tienda" texto="Puntos de venta" brillo={pulso} />
+      </Pop>
+      <Pop en={T.chipsRec + 6} style={{ left: CX + 24, top: Y_CHIPS_REC }}>
+        <ChipVerde icono="usuarios" texto="Usuarios" />
+      </Pop>
+
+      {/* Cuentas administrativas (3 de ejemplo) */}
+      {XS.map((x, i) => {
+        const b = brilloDe(f, T.brillo[i + 1]);
         return (
-          <Pop key={i} en={T.tarjetas[i]} style={{ left: XS[i], top: ARRIBA_T, width: ANCHO_T }}>
-            <div
-              style={{
-                ...Caja,
-                height: ALTO_T,
-                padding: "26px 26px",
-                boxSizing: "border-box",
-                position: "relative",
-                borderColor: `rgba(78,193,72,${0.18 + 0.8 * brillo})`,
-                boxShadow: `0 24px 60px rgba(4,6,30,0.25), 0 0 ${36 * brillo}px rgba(78,193,72,${0.45 * brillo})`,
-              }}
-            >
-              <Icono nombre={c.icono} tam={48} color={C.verde} grosor={2.8} dibujo={tramo(f, T.tarjetas[i] + 6, T.tarjetas[i] + 30)} />
-              <div style={{ marginTop: 12, fontFamily: POPPINS, fontWeight: 700, fontSize: 34, lineHeight: 1.12, color: C.blanco }}>
+          <Pop key={i} en={T.tarjetas[i]} style={{ left: x, top: ARRIBA_T, width: ANCHO_T }}>
+            <div style={{ ...Caja, ...bordeBrillo(b), height: ALTO_T, padding: "22px 26px", boxSizing: "border-box", position: "relative" }}>
+              <Icono nombre="administrativa" tam={44} color={C.verde} grosor={2.8} dibujo={tramo(f, T.tarjetas[i] + 6, T.tarjetas[i] + 30)} />
+              <div style={{ marginTop: 10, fontFamily: POPPINS, fontWeight: 700, fontSize: 34, lineHeight: 1.12, color: C.blanco }}>
                 Cuenta
                 <br />
-                <Verde>{c.titulo}</Verde>
+                <Verde>administrativa</Verde>
               </div>
-              <div style={{ marginTop: 10, fontFamily: INTER, fontWeight: 500, fontSize: 28, lineHeight: 1.3, color: C.apoyo }}>
-                {c.sub.map((l) => (
-                  <div key={l}>{l}</div>
-                ))}
-              </div>
-              <div
-                style={{
-                  position: "absolute",
-                  left: 26,
-                  bottom: 24,
-                  padding: "7px 14px",
-                  borderRadius: 999,
-                  backgroundColor: C.blanco,
-                  color: C.tinta,
-                  fontFamily: INTER,
-                  fontWeight: 600,
-                  fontSize: 28,
-                  whiteSpace: "nowrap",
-                  opacity: etiqueta,
-                  translate: `0px ${(1 - etiqueta) * 12}px`,
-                }}
-              >
-                CVU y alias propios
-              </div>
+              <div style={{ marginTop: 6, fontFamily: INTER, fontWeight: 500, fontSize: 28, lineHeight: 1.3, color: C.apoyo }}>A cargo de un área</div>
+              <EtiquetaCVU v={tramo(f, T.etiquetas[i], T.etiquetas[i] + 14)} style={{ position: "absolute", left: 26, bottom: 22 }} />
             </div>
           </Pop>
         );
       })}
 
-      {/* Puntos de venta y usuarios debajo de cada cuenta */}
+      {/* Puntos de venta y usuarios debajo de cada administrativa */}
       {XS.map((x, i) => (
-        <Pop key={i} en={T.chips[i]} style={{ left: x, top: ARRIBA_T + ALTO_T + 28, width: ANCHO_T, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+        <Pop key={i} en={T.chips[i]} style={{ left: x, top: ARRIBA_T + ALTO_T + 20, width: ANCHO_T, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
           <ChipVerde icono="tienda" texto="Puntos de venta" brillo={pulso} />
           <ChipVerde icono="usuarios" texto="Usuarios" />
         </Pop>
       ))}
+
+      {/* Aclaración: las administrativas pueden ser las que el club necesite */}
+      <div
+        style={{
+          position: "absolute",
+          left: 636,
+          width: 1220,
+          top: Y_NOTA,
+          textAlign: "center",
+          fontFamily: INTER,
+          fontWeight: 500,
+          fontSize: 30,
+          lineHeight: 1.3,
+          color: C.blanco,
+          opacity: nota,
+          translate: `0px ${(1 - nota) * 14}px`,
+        }}
+      >
+        El club puede tener <Verde>tantas cuentas administrativas como necesite</Verde>.
+        <div style={{ color: C.apoyo }}>Estas 3 son solo un ejemplo.</div>
+      </div>
     </div>
   );
 };
