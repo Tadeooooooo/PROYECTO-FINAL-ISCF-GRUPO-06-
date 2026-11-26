@@ -26,5 +26,6 @@ export type Pantalla = {
   expandir?: Expandir;
 };
 export type Tarjetita = { titulo: string; texto: string };
-export type Paso = { desde: number; titulo: string[]; apoyo?: string[]; chip?: string; icono?: "escaneo"; tarjetas?: { desde: number; items: Tarjetita[] } };
+// pausa: cuadro (de contenido) donde se congela la imagen si la voz necesita más tiempo que el paso.
+export type Paso = { desde: number; pausa?: number; titulo: string[]; apoyo?: string[]; chip?: string; icono?: "escaneo"; tarjetas?: { desde: number; items: Tarjetita[] } };
 export type CapituloPantallas = { tipo: "pantallas"; id: string; etiqueta: string; duracion: number; chip?: string; pasos: Paso[]; pantallas: Pantalla[] };

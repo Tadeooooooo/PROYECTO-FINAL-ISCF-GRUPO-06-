@@ -30,9 +30,9 @@ export const pasosTipos: Paso[] = [
     titulo: ["Puntos de venta", "y *usuarios*"],
     apoyo: ["Cada cuenta puede crear", "puntos de venta y usuarios", "para cobrar. Todo lo que", "cobran entra en esa cuenta,", "sin afectar a las demás."],
   },
-  { desde: 640, titulo: ["Ideal para", "*eventos*"], apoyo: ["Distintos puntos de venta", "con QR de distintos montos."] },
+  { desde: 640, pausa: 755, titulo: ["Ideal para", "*eventos*"], apoyo: ["Distintos puntos de venta", "con QR de distintos montos."] },
   { desde: 780, titulo: ["Cada usuario", "tiene *un rol*"] },
-  { desde: 1000, titulo: ["La recaudadora y", "las administrativas", "ven *todas las", "funciones*"], apoyo: ["Los usuarios, según su rol."] },
+  { desde: 1000, pausa: 1118, titulo: ["La recaudadora y", "las administrativas", "ven *todas las", "funciones*"], apoyo: ["Los usuarios, según su rol."] },
 ];
 
 // Geometría del esquema (a la derecha, en el lugar del navegador).

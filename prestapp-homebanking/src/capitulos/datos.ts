@@ -218,7 +218,7 @@ export const cap7: CapituloPantallas = {
   chip: "Recaudadora y administrativas",
   duracion: 450,
   pasos: [
-    { desde: 0, titulo: ["Creá y editá", "*puntos de venta*"], apoyo: ["Nombre, dato adicional", "y usuarios asociados."] },
+    { desde: 0, pausa: 160, titulo: ["Creá y editá", "*puntos de venta*"], apoyo: ["Nombre, dato adicional", "y usuarios asociados."] },
     { desde: 235, titulo: ["Elegí los *usuarios*", "de cada punto", "de venta"] },
   ],
   pantallas: [

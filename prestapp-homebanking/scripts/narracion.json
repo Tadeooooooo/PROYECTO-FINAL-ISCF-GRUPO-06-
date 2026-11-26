@@ -1,0 +1,51 @@
+{
+  "_nota": "Locución: lo que dice la voz en cada paso. Se escribe como se pronuncia (siglas deletreadas).",
+  "intro": [
+    "Jom bánkin Prestap. Gestioná, cobrá y transferí desde tu computadora."
+  ],
+  "cap1": [
+    "En la pantalla de ingreso, tocá: Olvidé la contraseña.",
+    "Ingresá tu cuit y tu correo, y tocá Recuperar.",
+    "Escaneá el cu erre con el escáner de tu billetera Prestap.",
+    "La pantalla se actualiza y te pide la contraseña nueva: al menos una minúscula, una mayúscula y un carácter especial.",
+    "Después ingresás con tu cuit, tu correo y la clave nueva."
+  ],
+  "cap2": [
+    "Cada cuenta tiene ce ve u y alias propios.",
+    "Cada cuenta ve solo sus movimientos.",
+    "Cada cuenta puede crear puntos de venta y usuarios para cobrar. Todo lo que cobran entra en esa cuenta, sin afectar a las demás.",
+    "Ideal para eventos: distintos puntos de venta, con cu erre de distintos montos.",
+    "Cada usuario tiene un rol. Vendedor: ve Cobranzas y Movimientos. Administrativo: todo lo del vendedor, más Transferencias. Ninguno ve el saldo.",
+    "La recaudadora y las administrativas ven todas las funciones. Los usuarios, según su rol."
+  ],
+  "cap3": [
+    "Desde el inicio ves tu saldo, ce ve u y alias.",
+    "Y accedés a Transferir, Cobrar y Movimientos."
+  ],
+  "cap4": [
+    "En Cobranzas elegís el punto de venta y el método de cobro. Los usuarios solo ven su punto de venta.",
+    "Generá un link de cobro: importe, concepto, vencimiento, y si es de uso múltiple.",
+    "Ingresá un importe y compartí los datos para que te transfieran.",
+    "Ingresá el importe y mostrá el cu erre en tu pantalla, para cobrar al instante.",
+    "Descargá un pe de efe con tu cu erre para tenerlo impreso. Cu erre cerrado: cobra siempre el mismo importe. Cu erre abierto: la persona ingresa el monto."
+  ],
+  "cap5": [
+    "Consultá tus movimientos y filtrá por fecha.",
+    "Descargalos en pe de efe o Excel."
+  ],
+  "cap6": [
+    "Hacé una o varias transferencias en una sola operación.",
+    "También podés cargarlas desde un archivo."
+  ],
+  "cap7": [
+    "Para la recaudadora y las administrativas: creá y editá puntos de venta, con nombre, dato adicional y usuarios asociados.",
+    "Elegí los usuarios de cada punto de venta."
+  ],
+  "cap8": [
+    "También para la recaudadora y las administrativas: creá usuarios y asignales un rol, vendedor o administrativo.",
+    "Después los asociás a tus puntos de venta."
+  ],
+  "cierre": [
+    "Todo tu club, en un solo lugar. Prestap punto com punto ar."
+  ]
+}
