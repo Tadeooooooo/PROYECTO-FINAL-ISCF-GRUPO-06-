@@ -14,14 +14,14 @@ const CAPITULOS = ["01_primer_ingreso", "02_tipos_de_cuenta", "03_inicio", "04_c
 const ESCENAS = {
   "00_intro": 120,
   "01a_olvide_la_contrasena": 305, "01b_cuit_y_correo": 510, "01c_escanear_qr": 740, "01d_contrasena_nueva": 1070, "01e_ingreso": 1320,
-  "02a_cuentas": 1580, "02b_solo_sus_movimientos": 1730, "02c_puntos_de_venta_y_usuarios": 1940, "02d_eventos": 2089, "02e_roles": 2306, "02f_funciones": 2620,
-  "03a_saldo_cvu_alias": 2867, "03b_accesos": 3037,
-  "04a_metodos": 3257, "04b_link": 3497, "04c_transferencia": 3647, "04d_datos_para_transferir": 3797, "04e_qr_pantalla": 4037, "04f_qr_impreso": 4357,
-  "05a_filtros": 4577, "05b_descargas": 4717,
-  "06a_varias_transferencias": 5097, "06b_archivo": 5227,
-  "07a_puntos_de_venta": 5467, "07b_usuarios_asociados": 5650,
-  "08a_carga_de_usuario": 6040, "08b_rol": 6160,
-  "09_cierre": 6400,
+  "02a_cuentas": 1580, "02b_solo_sus_movimientos": 1730, "02c_puntos_de_venta_y_usuarios": 1940, "02d_eventos": 2095, "02e_roles": 2312, "02f_funciones": 2624,
+  "03a_saldo_cvu_alias": 2875, "03b_accesos": 3045,
+  "04a_metodos": 3265, "04b_link": 3505, "04c_transferencia": 3655, "04d_datos_para_transferir": 3805, "04e_qr_pantalla": 4045, "04f_qr_impreso": 4365,
+  "05a_filtros": 4585, "05b_descargas": 4725,
+  "06a_varias_transferencias": 5105, "06b_archivo": 5235,
+  "07a_puntos_de_venta": 5475, "07b_usuarios_asociados": 5659,
+  "08a_carga_de_usuario": 6049, "08b_rol": 6169,
+  "09_cierre": 6409,
 };
 
 if (que === "todo" || que === "capitulos") {

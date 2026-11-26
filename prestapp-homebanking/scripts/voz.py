@@ -11,6 +11,7 @@ import wave
 
 import numpy as np
 import pyloudnorm as pyln
+from scipy.ndimage import maximum_filter1d
 from scipy.signal import butter, resample_poly, sosfilt
 
 MODELO = sys.argv[1]
@@ -37,13 +38,20 @@ for bloque, frases in GUION.items():
         w.close()
         os.remove(crudo)
         x = resample_poly(x, SR, sr)
-        # Recorte de silencios de punta, filtro de graves y un poco de calidez; volumen parejo (-18 LUFS).
+        # Recorte de silencios de punta, filtro de graves y un poco de calidez; volumen parejo (-20 LUFS).
         umbral = np.abs(x).max() * 0.02
         idx = np.nonzero(np.abs(x) > umbral)[0]
         x = x[max(0, idx[0] - int(0.03 * SR)): idx[-1] + int(0.12 * SR)]
         x = sosfilt(butter(2, 80, btype="highpass", fs=SR, output="sos"), x)
-        x = x * 10 ** ((-18 - pyln.Meter(SR).integrated_loudness(x)) / 20)
-        x = np.clip(x, -0.98, 0.98)
+        x = x * 10 ** ((-20 - pyln.Meter(SR).integrated_loudness(x)) / 20)
+        # Limitador suave (sin recorte): la ganancia baja con anticipación donde la voz pasaría de -3 dBFS.
+        techo = 10 ** (-3 / 20)
+        ventana = int(0.012 * SR)
+        envolvente = maximum_filter1d(np.abs(x), size=ventana * 2 + 1)
+        ganancia = np.minimum(1, techo / np.maximum(envolvente, 1e-9))
+        suavizado = np.hanning(ventana * 2 + 1)
+        ganancia = np.convolve(ganancia, suavizado / suavizado.sum(), mode="same")
+        x = x * np.minimum(ganancia, techo / np.maximum(np.abs(x), 1e-9))
         fade = int(0.01 * SR)
         x[:fade] *= np.linspace(0, 1, fade)
         x[-fade:] *= np.linspace(1, 0, fade)
