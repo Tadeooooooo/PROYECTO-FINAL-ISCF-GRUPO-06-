@@ -1,5 +1,6 @@
 import React from "react";
-import { spring, useCurrentFrame } from "remotion";
+import { spring } from "remotion";
+import { useCuadro } from "../tiempo";
 import { Columna } from "../componentes/Columna";
 import { Icono } from "../componentes/Iconos";
 import { C, cruce, FPS, INTER, POPPINS, RESORTE, sale, tramo } from "../marca";
@@ -53,7 +54,7 @@ const Y_NOTA = 940;
 const Verde: React.FC<{ children: React.ReactNode }> = ({ children }) => <span style={{ color: C.verde }}>{children}</span>;
 
 const Pop: React.FC<{ en: number; children: React.ReactNode; style?: React.CSSProperties }> = ({ en, children, style }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const v = spring({ frame: f - en, fps: FPS, config: RESORTE });
   if (f < en) return null;
   return <div style={{ position: "absolute", opacity: Math.min(1, v * 1.5), scale: String(0.9 + 0.1 * v), translate: `0px ${(1 - v) * 26}px`, ...style }}>{children}</div>;
@@ -117,7 +118,7 @@ const ChipVerde: React.FC<{ icono: "tienda" | "usuarios"; texto: string; brillo?
 );
 
 const Esquema: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const fuera = tramo(f, T.saleEsquema, T.saleEsquema + 18, sale);
   if (fuera >= 1) return null;
   const con = tramo(f, T.conectores, T.conectores + 26, cruce);
@@ -230,7 +231,7 @@ const ROLES = [
 ];
 
 const Roles: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   return (
     <>
       {ROLES.map((r, i) => (
@@ -257,7 +258,7 @@ const Roles: React.FC = () => {
 };
 
 export const TiposDeCuenta: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const fin = 1 - tramo(f, T.fin - 14, T.fin, sale);
   return (
     <>

@@ -1,5 +1,6 @@
 import React from "react";
-import { Img, staticFile, useCurrentFrame } from "remotion";
+import { Img, staticFile } from "remotion";
+import { useCuadro } from "../tiempo";
 import { C, INTER, POPPINS, sale, tramo } from "../marca";
 
 // Logo "Prestapp · TU BILLETERA + cuotas" a color, en pastilla blanca con sombra suave.
@@ -71,7 +72,7 @@ export const Titulo: React.FC<{
   readonly alinear?: "left" | "center";
   readonly style?: React.CSSProperties;
 }> = ({ lineas, entra, sale: salida = 99999, tamano, color = C.tinta, fuente = "titulo", acento = C.verde, alinear = "left", style }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const s = tramo(f, salida, salida + 10, sale);
   const estado = { verde: false };
   let k = 0;

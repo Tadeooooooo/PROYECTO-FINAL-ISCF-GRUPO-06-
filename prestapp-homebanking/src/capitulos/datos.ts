@@ -76,9 +76,15 @@ export const cap3: CapituloPantallas = {
   id: "cap3",
   etiqueta: "INICIO",
   duracion: 330,
+  pausas: [{ en: 292, cuadros: 45 }],
   pasos: [
     { desde: 0, titulo: ["Desde el inicio", "ves tu *saldo,", "CVU y alias*"] },
-    { desde: 170, titulo: ["Y accedés a", "*Transferir, Cobrar", "y Movimientos*"] },
+    {
+      desde: 170,
+      titulo: ["Y accedés a", "estas *funciones*:"],
+      // Cada ítem aparece junto con el contorno de su botón.
+      lista: { desde: 190, cada: 25, items: [{ icono: "enviar", texto: "Transferir" }, { icono: "cobrar", texto: "Cobrar" }, { icono: "flechas", texto: "Movimientos" }] },
+    },
   ],
   pantallas: [
     {
@@ -94,20 +100,26 @@ export const cap3: CapituloPantallas = {
   ],
 };
 
+// Cobranzas: sin el método Transferencia (no se habla de esa función en este capítulo).
 export const cap4: CapituloPantallas = {
   tipo: "pantallas",
   id: "cap4",
   etiqueta: "COBRANZAS",
-  duracion: 1350,
+  duracion: 1070,
+  pausas: [{ en: 196, cuadros: 80 }],
   pasos: [
-    { desde: 0, titulo: ["En Cobranzas", "elegís el *punto de", "venta* y el método", "de cobro"], chip: "Los usuarios solo ven su punto de venta" },
-    { desde: 230, titulo: ["Generá un", "*link de cobro*"], apoyo: ["Importe, concepto,", "vencimiento y si es", "de uso múltiple."] },
-    { desde: 480, titulo: ["Ingresá un importe", "y compartí los", "*datos para que", "te transfieran*"] },
-    { desde: 760, titulo: ["Ingresá el importe", "y mostrá el *QR en", "tu pantalla*"], apoyo: ["Para cobrar al instante."] },
     {
-      desde: 1010,
+      desde: 0,
+      titulo: ["En Cobranzas", "elegís el *punto de", "venta* y el método", "de cobro"],
+      apoyo: ["Antes creá un punto de", "venta: sin él, los métodos", "de cobro no funcionan."],
+      chip: "Los usuarios solo ven su punto de venta",
+    },
+    { desde: 230, titulo: ["Generá un", "*link de cobro*"], apoyo: ["Importe, concepto,", "vencimiento y si es", "de uso múltiple."] },
+    { desde: 480, titulo: ["Ingresá el importe", "y mostrá el *QR en", "tu pantalla*"], apoyo: ["Para cobrar al instante."] },
+    {
+      desde: 730,
       titulo: ["Descargá un PDF", "con tu *QR* para", "tenerlo impreso"],
-      tarjetas: { desde: 1085, items: [{ titulo: "*QR cerrado*", texto: "cobra siempre el mismo importe" }, { titulo: "*QR abierto*", texto: "la persona ingresa el monto" }] },
+      tarjetas: { desde: 805, items: [{ titulo: "*QR cerrado*", texto: "cobra siempre el mismo importe" }, { titulo: "*QR abierto*", texto: "la persona ingresa el monto" }] },
     },
   ],
   pantallas: [
@@ -118,8 +130,7 @@ export const cap4: CapituloPantallas = {
         { caja: [243, 111, 645, 149], desde: 45, hasta: 120 },
         { caja: [243, 171, 645, 364], desde: 140, hasta: 200 },
         { caja: [660, 171, 1062, 364], desde: 150, hasta: 200 },
-        { caja: [1493, 171, 1895, 364], desde: 160, hasta: 200 },
-        { caja: [243, 380, 645, 554], desde: 170 },
+        { caja: [243, 380, 645, 554], desde: 160 },
       ],
       toques: [{ x: 444, y: 467, en: 212 }],
     },
@@ -132,30 +143,17 @@ export const cap4: CapituloPantallas = {
       toques: [{ x: 1551, y: 128, en: 445 }],
     },
     {
-      img: "08_cobranzas_transferencia_importe.png", ancho: 1700, alto: 1013, desde: 480,
-      camara: [{ en: 480, z: 1.95, foco: [430, 140] }],
-      tipeos: [{ x: 33, y: 132, texto: IMPORTE, desde: 508, porLetra: 4, tapa: [22, 111, 410, 145] }],
-      botones: [{ caja: [439, 109, 843, 145], texto: "COBRAR", desde: 538 }],
-      resaltes: [{ caja: [439, 109, 843, 145], desde: 550 }],
-      toques: [{ x: 641, y: 127, en: 590 }],
+      img: "10_cobranzas_qr_pantalla_importe.png", ancho: 1700, alto: 1005, desde: 480,
+      camara: [{ en: 480, z: 2.1, foco: [430, 130] }, { en: 598, z: 1.3, foco: [850, 410] }],
+      tipeos: [{ x: 33, y: 128, texto: IMPORTE, desde: 510, porLetra: 4, tapa: [22, 107, 410, 141] }],
+      tarjetas: [{ img: "11_cobranzas_qr_pantalla_generado.png", ancho: 470, alto: 545, x: 615, y: 140, desde: 600, oscurecer: 0.35 }],
+      resaltes: [{ caja: [439, 105, 843, 141], desde: 542, hasta: 588 }, { caja: [712, 284, 962, 534], desde: 645 }],
+      toques: [{ x: 641, y: 123, en: 578 }],
     },
     {
-      img: "09_cobranzas_transferencia_datos.png", ancho: 1701, alto: 948, desde: 615,
-      camara: [{ en: 615, z: 1.35, foco: [640, 120] }],
-      resaltes: [{ caja: [12, 22, 1200, 172], desde: 650 }],
-    },
-    {
-      img: "10_cobranzas_qr_pantalla_importe.png", ancho: 1700, alto: 1005, desde: 760,
-      camara: [{ en: 760, z: 2.1, foco: [430, 130] }, { en: 878, z: 1.3, foco: [850, 410] }],
-      tipeos: [{ x: 33, y: 128, texto: IMPORTE, desde: 790, porLetra: 4, tapa: [22, 107, 410, 141] }],
-      tarjetas: [{ img: "11_cobranzas_qr_pantalla_generado.png", ancho: 470, alto: 545, x: 615, y: 140, desde: 880, oscurecer: 0.35 }],
-      resaltes: [{ caja: [439, 105, 843, 141], desde: 822, hasta: 868 }, { caja: [712, 284, 962, 534], desde: 925 }],
-      toques: [{ x: 641, y: 123, en: 858 }],
-    },
-    {
-      img: "12_cobranzas_qr_impreso.png", ancho: 1699, alto: 1008, desde: 1010,
-      camara: [{ en: 1010, z: 1 }, { en: 1040, z: 2.3, foco: [330, 330] }],
-      resaltes: [{ caja: [288, 346, 384, 363], desde: 1100 }, { caja: [320, 365, 416, 382], desde: 1180 }],
+      img: "12_cobranzas_qr_impreso.png", ancho: 1699, alto: 1008, desde: 730,
+      camara: [{ en: 730, z: 1 }, { en: 760, z: 2.3, foco: [330, 330] }],
+      resaltes: [{ caja: [288, 346, 384, 363], desde: 820 }, { caja: [320, 365, 416, 382], desde: 900 }],
     },
   ],
 };
@@ -217,9 +215,12 @@ export const cap7: CapituloPantallas = {
   etiqueta: "PUNTOS DE VENTA",
   chip: "Recaudadora y administrativas",
   duracion: 450,
+  pausas: [{ en: 51, cuadros: 75 }],
   pasos: [
-    { desde: 0, pausa: 160, titulo: ["Creá y editá", "*puntos de venta*"], apoyo: ["Nombre, dato adicional", "y usuarios asociados."] },
-    { desde: 235, titulo: ["Elegí los *usuarios*", "de cada punto", "de venta"] },
+    // Qué es, antes de mostrar cómo se crea.
+    { desde: 0, titulo: ["Un *punto de venta*", "es un sector de", "cobro de tu cuenta"] },
+    { desde: 66, titulo: ["Creá cada uno con", "*nombre y dato", "adicional*"] },
+    { desde: 235, titulo: ["Elegí qué *usuarios*", "cobran en ese", "punto de venta"] },
   ],
   pantallas: [
     {
@@ -227,7 +228,7 @@ export const cap7: CapituloPantallas = {
       camara: [{ en: 0, z: 1 }, { en: 24, z: 1.55, foco: [860, 170] }, { en: 225, z: 1.9, foco: [961, 390] }],
       tarjetas: [{ img: "19_puntos_de_venta_usuarios_asociados.png", ancho: 922, alto: 418, x: 500, y: 180, desde: 226, oscurecer: 0.4 }],
       resaltes: [
-        { caja: [242, 109, 1061, 147], desde: 60, hasta: 165 },
+        { caja: [242, 109, 1061, 147], desde: 72, hasta: 165 },
         { caja: [1076, 111, 1477, 147], desde: 170, hasta: 222 },
         { caja: [500, 308, 1422, 362], desde: 270, hasta: 335 },
         { caja: [1192, 528, 1399, 562], desde: 345 },
@@ -243,15 +244,18 @@ export const cap8: CapituloPantallas = {
   etiqueta: "USUARIOS",
   chip: "Recaudadora y administrativas",
   duracion: 480,
+  pausas: [{ en: 51, cuadros: 90 }],
   pasos: [
-    { desde: 0, titulo: ["Creá *usuarios* y", "asignales un rol:", "vendedor o", "administrativo"] },
+    // Qué es, antes de mostrar cómo se crea.
+    { desde: 0, titulo: ["Los *usuarios* son", "extensiones de", "tu cuenta"], apoyo: ["Cada uno tiene un rol:", "vendedor o administrativo."] },
+    { desde: 66, titulo: ["Cargá sus datos", "y elegí su *rol*"] },
     { desde: 385, titulo: ["Después los", "asociás a tus", "*puntos de venta*"] },
   ],
   pantallas: [
     {
       img: "20_usuarios.png", ancho: 1919, alto: 948, desde: 0,
       camara: [{ en: 0, z: 1 }, { en: 24, z: 1.15, foco: [1067, 200] }],
-      resaltes: [{ caja: [241, 108, 1893, 147], desde: 55, hasta: 120 }],
+      resaltes: [{ caja: [241, 108, 1893, 147], desde: 72, hasta: 122 }],
     },
     {
       img: "21_usuarios_detalle.png", ancho: 1700, alto: 1007, desde: 128,

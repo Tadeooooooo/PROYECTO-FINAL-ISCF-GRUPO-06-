@@ -1,5 +1,6 @@
 import React from "react";
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile } from "remotion";
+import { useCuadro } from "../tiempo";
 import { C, cruce, FPS, MONTSERRAT, NAV, RESORTE, sale, suave, tramo } from "../marca";
 import type { Boton, Camara, Pantalla, Resalte, Tarjeta, Tipeo, Toque } from "../tipos";
 
@@ -238,7 +239,7 @@ const VistaPantalla: React.FC<{ p: Pantalla; f: number }> = ({ p, f }) => {
 
 // Las pantallas de un capítulo, con fundido entre una y otra. Puede arrancar y/o terminar en blanco (cambio de capítulo).
 export const Pantallas: React.FC<{ pantallas: Pantalla[]; duracion: number; blancoInicio?: boolean; blancoFin?: boolean }> = ({ pantallas, duracion, blancoInicio, blancoFin }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   return (
     <AbsoluteFill style={{ backgroundColor: FONDO_PANTALLA, overflow: "hidden" }}>
       {pantallas.map((p, i) => {
@@ -258,7 +259,7 @@ export const Pantallas: React.FC<{ pantallas: Pantalla[]; duracion: number; blan
 
 // ----- Mockup de navegador simple, sin marcas: barra con tres puntos y una barra de direcciones vacía -----
 export const Navegador: React.FC<{ children: React.ReactNode; entra?: number; sale?: number }> = ({ children, entra, sale: salida }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const e = entra === undefined ? 1 : spring({ frame: f - entra, fps: FPS, config: RESORTE });
   const s = salida === undefined ? 0 : tramo(f, salida, salida + 20, cruce);
   if (e <= 0.001 && entra !== undefined && f < entra) return null;

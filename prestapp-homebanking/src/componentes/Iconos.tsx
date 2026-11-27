@@ -1,5 +1,6 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
+import { interpolate } from "remotion";
+import { useCuadro } from "../tiempo";
 import { C, tramo } from "../marca";
 
 // Íconos de línea propios (viewBox 48x48), trazo redondeado. Se dibujan con "dibujo" de 0 a 1.
@@ -16,6 +17,9 @@ const TRAZOS: Record<string, string[]> = {
   candado: ["M12 22h24v19H12z", "M17 22v-6a7 7 0 0 1 14 0v6", "M24 30v4"],
   lapiz: ["M30 8l10 10-22 22H8V30z", "M26 12l10 10"],
   pantalla: ["M6 9h36v24H6z", "M18 41h12", "M24 33v8"],
+  enviar: ["M42 6L21 27", "M42 6L29 42l-8-15-15-8z"],
+  cobrar: ["M24 42a17 17 0 1 0 0-34 17 17 0 0 0 0 34z", "M24 14v20", "M29 18.5c-1.1-1.4-2.9-2.2-5-2.2-2.8 0-5 1.6-5 3.7 0 5 10 2.6 10 7.6 0 2.1-2.2 3.7-5 3.7-2.1 0-4-.9-5.1-2.3"],
+  flechas: ["M8 16h31", "M32 9l7 7-7 7", "M40 32H9", "M16 25l-7 7 7 7"],
 };
 
 export const Icono: React.FC<{ nombre: keyof typeof TRAZOS; tam: number; color?: string; grosor?: number; dibujo?: number; style?: React.CSSProperties }> = ({
@@ -35,7 +39,7 @@ export const Icono: React.FC<{ nombre: keyof typeof TRAZOS; tam: number; color?:
 
 // Celular escaneando un QR (al costado del paso del QR): marco, esquinas de escaneo y una línea verde que barre.
 export const IconoEscaneo: React.FC<{ entra: number }> = ({ entra }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const d = tramo(f, entra, entra + 24);
   const barrido = (Math.sin(((f - entra) / 34) * Math.PI) + 1) / 2;
   const yLinea = interpolate(barrido, [0, 1], [66, 128]);

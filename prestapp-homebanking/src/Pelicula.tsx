@@ -1,6 +1,7 @@
 import { Audio } from "@remotion/media";
 import React from "react";
-import { AbsoluteFill, Freeze, interpolate, Sequence, spring, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, interpolate, Sequence, spring, staticFile, useCurrentFrame } from "remotion";
+import { aContenido, Remapeo, useCuadro, type Pausa } from "./tiempo";
 import { cap1, cap3, cap4, cap5, cap6, cap7, cap8 } from "./capitulos/datos";
 import { DURACION_TIPOS, pasosTipos, TiposDeCuenta } from "./capitulos/TiposDeCuenta";
 import { Columna } from "./componentes/Columna";
@@ -30,6 +31,7 @@ const BLOQUES: Bloque[] = [
   { tipo: "cierre", id: "cierre", duracion: 165 },
 ];
 
+const SECCIONES = true;
 const conNavegador = (b?: Bloque) => !!b && (b.tipo === "pantallas" || b.tipo === "intro");
 
 // ----- Voz en off: una pista por paso, que arranca junto con el título -----
@@ -37,7 +39,6 @@ const conNavegador = (b?: Bloque) => !!b && (b.tipo === "pantallas" || b.tipo ==
 // y todo lo que sigue se corre: así el texto nunca se va antes de que la voz termine.
 // Apagada: el video va sin voz (las pistas siguen en public/audio/voz por si se quiere volver a usar).
 const CON_VOZ = false;
-type Pausa = { en: number; cuadros: number };
 type Locucion = { archivo: string; en: number; dura: number }; // en = cuadro de contenido del bloque
 const DUR_VOZ = VOZ as Record<string, number>;
 
@@ -50,7 +51,8 @@ const vozDe = (b: Bloque): Locucion[] => {
 };
 
 const pausasDe = (b: Bloque): Pausa[] => {
-  if (!CON_VOZ) return [];
+  const fijas = b.tipo === "pantallas" ? (b.pausas ?? []) : [];
+  if (!CON_VOZ) return fijas;
   const pasos = pasosDe(b);
   const voz = vozDe(b);
   const pausas: Pausa[] = [];
@@ -59,7 +61,7 @@ const pausasDe = (b: Bloque): Pausa[] => {
     const falta = voz[i].en + voz[i].dura + 4 - (sig - 8);
     if (falta > 0) pausas.push({ en: p.pausa ?? sig - 16, cuadros: falta });
   });
-  return pausas;
+  return [...fijas, ...pausas].sort((x, y) => x.en - y.en);
 };
 
 // Cuadro de contenido -> cuadro real del bloque (sumando las pausas anteriores).
@@ -81,35 +83,15 @@ for (const b of BLOQUES) {
 export const TOTAL = acumulado;
 export const RANGOS = BLOQUES.filter((b) => b.id.startsWith("cap")).map((b) => ({ id: b.id, desde: INICIOS[b.id], hasta: INICIOS[b.id] + DURACIONES[b.id] }));
 
-// Muestra el contenido con sus pausas: tramos normales y, entre ellos, cuadros congelados.
-const ConPausas: React.FC<{ pausas: Pausa[]; duracion: number; children: React.ReactNode }> = ({ pausas, duracion, children }) => {
-  const tramos: React.ReactNode[] = [];
-  let ini = 0;
-  let corrido = 0;
-  pausas.forEach((p, k) => {
-    tramos.push(
-      <Sequence key={`t${k}`} from={ini + corrido} durationInFrames={p.en - ini}>
-        <Sequence from={-ini}>{children}</Sequence>
-      </Sequence>,
-      <Sequence key={`p${k}`} from={p.en + corrido} durationInFrames={p.cuadros}>
-        <Freeze frame={p.en}>{children}</Freeze>
-      </Sequence>,
-    );
-    corrido += p.cuadros;
-    ini = p.en;
-  });
-  tramos.push(
-    <Sequence key="fin" from={ini + corrido} durationInFrames={duracion - ini}>
-      <Sequence from={-ini}>{children}</Sequence>
-    </Sequence>,
-  );
-  return <>{tramos}</>;
-};
+// Muestra el contenido con sus pausas: durante cada pausa el tiempo de contenido queda fijo (imagen quieta).
+const ConPausas: React.FC<{ pausas: Pausa[]; children: React.ReactNode }> = ({ pausas, children }) => (
+  <Remapeo.Provider value={(f) => aContenido(pausas, f)}>{children}</Remapeo.Provider>
+);
 
 // ----- Intro: "Home Banking Prestapp" y la bajada; el navegador entra con la pantalla de inicio -----
 const PANTALLA_INTRO = [{ img: "05_inicio.png", ancho: 1934, alto: 942, desde: 0, camara: [{ en: 0, z: 1 }] }];
 const Intro: React.FC<{ duracion: number }> = ({ duracion }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const bajada = tramo(f, 44, 62);
   const fuera = tramo(f, duracion - 16, duracion, sale);
   return (
@@ -132,7 +114,7 @@ const Intro: React.FC<{ duracion: number }> = ({ duracion }) => {
 // ----- Cierre: check verde, título, logo (llega desde la esquina) y web/usuario -----
 const CIERRE_LOGO = { y: 560, ancho: 300 };
 const Cierre: React.FC = () => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const pop = spring({ frame: f - 12, fps: FPS, config: RESORTE });
   const trazo = tramo(f, 16, 30);
   const linea = tramo(f, 56, 72);
@@ -174,8 +156,9 @@ const Bloque: React.FC<{ b: Bloque; anterior?: Bloque; siguiente?: Bloque }> = (
   if (b.tipo === "intro") return <Intro duracion={b.duracion} />;
   if (b.tipo === "tipos") return <TiposDeCuenta />;
   if (b.tipo === "cierre") return <Cierre />;
-  const entra = !conNavegador(anterior);
-  const sale = !conNavegador(siguiente);
+  // Cada capítulo se entrega como video suelto: el navegador entra al principio y sale al final.
+  const entra = SECCIONES || !conNavegador(anterior);
+  const sale = SECCIONES || !conNavegador(siguiente);
   return (
     <>
       <Navegador entra={entra ? 4 : undefined} sale={sale ? b.duracion - 22 : undefined}>
@@ -215,7 +198,7 @@ export const Pelicula: React.FC<{ desde: number; hasta: number }> = ({ desde, ha
         <Fondo />
         {BLOQUES.map((b, i) => (
           <Sequence key={b.id} name={b.id} from={INICIOS[b.id]} durationInFrames={DURACIONES[b.id]}>
-            <ConPausas pausas={PAUSAS[b.id]} duracion={b.duracion}>
+            <ConPausas pausas={PAUSAS[b.id]}>
               <Bloque b={b} anterior={BLOQUES[i - 1]} siguiente={BLOQUES[i + 1]} />
             </ConPausas>
           </Sequence>

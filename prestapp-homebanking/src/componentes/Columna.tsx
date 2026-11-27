@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentFrame } from "remotion";
+import { useCuadro } from "../tiempo";
 import { C, COLUMNA, INTER, POPPINS, sale, tramo } from "../marca";
 import type { Paso } from "../tipos";
 import { Icono, IconoEscaneo } from "./Iconos";
@@ -58,7 +58,7 @@ const ConVerde: React.FC<{ texto: string }> = ({ texto }) => (
 
 // Columna de la izquierda: rótulo del capítulo fijo y los textos de cada paso, que se van reemplazando.
 export const Columna: React.FC<{ etiqueta: string; chip?: string; pasos: Paso[]; duracion: number; arriba?: number }> = ({ etiqueta, chip, pasos, duracion, arriba = 262 }) => {
-  const f = useCurrentFrame();
+  const f = useCuadro();
   const fuera = tramo(f, duracion - 14, duracion, sale);
   const rot = tramo(f, 2, 18) * (1 - fuera);
   return (
@@ -90,6 +90,34 @@ export const Columna: React.FC<{ etiqueta: string; chip?: string; pasos: Paso[];
               {p.chip && (
                 <div style={{ marginTop: 30 }}>
                   <ChipBorde texto={p.chip} v={chipPaso} icono="usuarios" />
+                </div>
+              )}
+              {p.lista && (
+                <div style={{ marginTop: 30, display: "flex", flexDirection: "column", gap: 18 }}>
+                  {p.lista.items.map((it, k) => {
+                    const en = p.lista!.desde + k * p.lista!.cada;
+                    const v = tramo(f, en, en + 16);
+                    return (
+                      <div key={k} style={{ display: "flex", alignItems: "center", gap: 20, opacity: v, translate: `${(1 - v) * -40}px 0px` }}>
+                        <div
+                          style={{
+                            width: 64,
+                            height: 64,
+                            borderRadius: "50%",
+                            border: `2px solid rgba(78,193,72,0.75)`,
+                            backgroundColor: "rgba(78,193,72,0.12)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <Icono nombre={it.icono} tam={34} color={C.verde} grosor={3} dibujo={tramo(f, en + 4, en + 22)} />
+                        </div>
+                        <div style={{ fontFamily: POPPINS, fontWeight: 600, fontSize: 40, color: C.blanco }}>{it.texto}</div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
               {p.icono === "escaneo" && (

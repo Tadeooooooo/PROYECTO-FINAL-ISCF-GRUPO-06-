@@ -27,5 +27,8 @@ export type Pantalla = {
 };
 export type Tarjetita = { titulo: string; texto: string };
 // pausa: cuadro (de contenido) donde se congela la imagen si la voz necesita más tiempo que el paso.
-export type Paso = { desde: number; pausa?: number; titulo: string[]; apoyo?: string[]; chip?: string; icono?: "escaneo"; tarjetas?: { desde: number; items: Tarjetita[] } };
-export type CapituloPantallas = { tipo: "pantallas"; id: string; etiqueta: string; duracion: number; chip?: string; pasos: Paso[]; pantallas: Pantalla[] };
+// lista: ítems que aparecen en cascada debajo del título (cada "cada" cuadros).
+export type Item = { icono: "enviar" | "cobrar" | "flechas"; texto: string };
+export type Paso = { desde: number; pausa?: number; lista?: { desde: number; cada: number; items: Item[] }; titulo: string[]; apoyo?: string[]; chip?: string; icono?: "escaneo"; tarjetas?: { desde: number; items: Tarjetita[] } };
+// pausas: cuadros (de contenido) donde la imagen se queda quieta un rato para dar tiempo de lectura.
+export type CapituloPantallas = { tipo: "pantallas"; id: string; etiqueta: string; duracion: number; chip?: string; pausas?: { en: number; cuadros: number }[]; pasos: Paso[]; pantallas: Pantalla[] };
